@@ -1,7 +1,0 @@
-/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/CMakeFiles/webserver.dir
-/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/CMakeFiles/print.dir
-/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/CMakeFiles/package.dir
-/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/CMakeFiles/package_source.dir
-/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/CMakeFiles/test.dir
-/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/CMakeFiles/rebuild_cache.dir

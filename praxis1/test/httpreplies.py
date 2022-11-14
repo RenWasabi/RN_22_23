@@ -45,7 +45,6 @@ def main():
 
         conn.request('GET', '/index.html')
         reply = conn.getresponse()
-        reply.read()
         if reply.status != 404:
             return EXIT_FAILURE
 

@@ -53,7 +53,7 @@ def main():
         # Content should exist and match
         conn.request('GET', path)
         response = conn.getresponse()
-        if response.status != 200 and response.read() != content:
+        if response.status != 200 or response.read() != content:
             return EXIT_FAILURE
 
         # Delete should succeed
@@ -67,9 +67,9 @@ def main():
             return EXIT_FAILURE
 
         for path in ['/static/other', '/static/anything', '/static/else']:
-        conn.request('GET', path)
-        if conn.getresponse().status != 404:
-            return EXIT_FAILURE
+            conn.request('GET', path)
+            if conn.getresponse().status != 404:
+                return EXIT_FAILURE
 
         return EXIT_SUCCESS
 
