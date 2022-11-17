@@ -9,7 +9,7 @@
 // #include <netinet/in.h
 
 /* converts the string containing the port number to an
- * unsigned short, exits program with error message if
+ * unsigned short, exits progrgiam with error message if
  * the input is not a valid number */
 unsigned short port_string_to_ul(char* port_string);
 

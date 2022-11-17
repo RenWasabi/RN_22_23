@@ -3,6 +3,7 @@ project (RN-Praxis1)
 set (CMAKE_C_STANDARD 11)
 
 add_executable (webserver webserver.c)
+# add_library(helper_functions ./helper_functions.c)
 
 add_custom_target(print
 	${CMAKE_COMMAND} -E echo $<TARGET_FILE:webserver>

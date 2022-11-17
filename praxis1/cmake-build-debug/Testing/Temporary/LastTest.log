@@ -1,0 +1,206 @@
+Start testing: Nov 14 16:20 CET
+----------------------------------------------------------
+1/8 Testing: Execute
+1/8 Test: Execute
+Command: "/home/caro/Documents/RN_22_23/praxis1/test/execute.py" "/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/webserver"
+Directory: /home/caro/Documents/RN_22_23/praxis1/cmake-build-debug
+"Execute" start time: Nov 14 16:20 CET
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"Execute" end time: Nov 14 16:20 CET
+"Execute" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/8 Testing: Listen
+2/8 Test: Listen
+Command: "/home/caro/Documents/RN_22_23/praxis1/test/listen.py" "/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/webserver"
+Directory: /home/caro/Documents/RN_22_23/praxis1/cmake-build-debug
+"Listen" start time: Nov 14 16:20 CET
+Output:
+----------------------------------------------------------
+Testing new build configuration.
+Traceback (most recent call last):
+  File "/home/caro/Documents/RN_22_23/praxis1/test/listen.py", line 41, in <module>
+    sys.exit(main())
+  File "/home/caro/Documents/RN_22_23/praxis1/test/listen.py", line 35, in main
+    socket.create_connection(('localhost', args.port), timeout=2)
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Failed.
+"Listen" end time: Nov 14 16:20 CET
+"Listen" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/8 Testing: Reply
+3/8 Test: Reply
+Command: "/home/caro/Documents/RN_22_23/praxis1/test/reply.py" "/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/webserver"
+Directory: /home/caro/Documents/RN_22_23/praxis1/cmake-build-debug
+"Reply" start time: Nov 14 16:20 CET
+Output:
+----------------------------------------------------------
+Testing new build configuration.
+Traceback (most recent call last):
+  File "/home/caro/Documents/RN_22_23/praxis1/test/reply.py", line 44, in <module>
+    sys.exit(main())
+  File "/home/caro/Documents/RN_22_23/praxis1/test/reply.py", line 36, in main
+    conn = socket.create_connection(('localhost', args.port), timeout=2)
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Failed.
+"Reply" end time: Nov 14 16:20 CET
+"Reply" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/8 Testing: Packets
+4/8 Test: Packets
+Command: "/home/caro/Documents/RN_22_23/praxis1/test/packets.py" "/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/webserver"
+Directory: /home/caro/Documents/RN_22_23/praxis1/cmake-build-debug
+"Packets" start time: Nov 14 16:20 CET
+Output:
+----------------------------------------------------------
+Testing new build configuration.
+Traceback (most recent call last):
+  File "/home/caro/Documents/RN_22_23/praxis1/test/packets.py", line 49, in <module>
+    sys.exit(main())
+  File "/home/caro/Documents/RN_22_23/praxis1/test/packets.py", line 37, in main
+    conn = socket.create_connection(('localhost', args.port), timeout=2)
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+<end of output>
+Test time =   0.09 sec
+----------------------------------------------------------
+Test Failed.
+"Packets" end time: Nov 14 16:20 CET
+"Packets" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/8 Testing: HTTPReply
+5/8 Test: HTTPReply
+Command: "/home/caro/Documents/RN_22_23/praxis1/test/httpreply.py" "/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/webserver"
+Directory: /home/caro/Documents/RN_22_23/praxis1/cmake-build-debug
+"HTTPReply" start time: Nov 14 16:20 CET
+Output:
+----------------------------------------------------------
+Testing new build configuration.
+Traceback (most recent call last):
+  File "/home/caro/Documents/RN_22_23/praxis1/test/httpreply.py", line 48, in <module>
+    sys.exit(main())
+  File "/home/caro/Documents/RN_22_23/praxis1/test/httpreply.py", line 38, in main
+    conn = socket.create_connection(('localhost', args.port), timeout=2)
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Failed.
+"HTTPReply" end time: Nov 14 16:20 CET
+"HTTPReply" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/8 Testing: HTTPReplies
+6/8 Test: HTTPReplies
+Command: "/home/caro/Documents/RN_22_23/praxis1/test/httpreplies.py" "/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/webserver"
+Directory: /home/caro/Documents/RN_22_23/praxis1/cmake-build-debug
+"HTTPReplies" start time: Nov 14 16:20 CET
+Output:
+----------------------------------------------------------
+Testing new build configuration.
+Traceback (most recent call last):
+  File "/home/caro/Documents/RN_22_23/praxis1/test/httpreplies.py", line 56, in <module>
+    sys.exit(main())
+  File "/home/caro/Documents/RN_22_23/praxis1/test/httpreplies.py", line 38, in main
+    conn.connect()
+  File "/usr/lib/python3.10/http/client.py", line 941, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Failed.
+"HTTPReplies" end time: Nov 14 16:20 CET
+"HTTPReplies" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/8 Testing: StaticContent
+7/8 Test: StaticContent
+Command: "/home/caro/Documents/RN_22_23/praxis1/test/static_content.py" "/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/webserver"
+Directory: /home/caro/Documents/RN_22_23/praxis1/cmake-build-debug
+"StaticContent" start time: Nov 14 16:20 CET
+Output:
+----------------------------------------------------------
+Testing new build configuration.
+Traceback (most recent call last):
+  File "/home/caro/Documents/RN_22_23/praxis1/test/static_content.py", line 61, in <module>
+    sys.exit(main())
+  File "/home/caro/Documents/RN_22_23/praxis1/test/static_content.py", line 37, in main
+    conn.connect()
+  File "/usr/lib/python3.10/http/client.py", line 941, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Failed.
+"StaticContent" end time: Nov 14 16:20 CET
+"StaticContent" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/8 Testing: DynamicContent
+8/8 Test: DynamicContent
+Command: "/home/caro/Documents/RN_22_23/praxis1/test/dynamic_content.py" "/home/caro/Documents/RN_22_23/praxis1/cmake-build-debug/webserver"
+Directory: /home/caro/Documents/RN_22_23/praxis1/cmake-build-debug
+"DynamicContent" start time: Nov 14 16:20 CET
+Output:
+----------------------------------------------------------
+Testing new build configuration.
+Traceback (most recent call last):
+  File "/home/caro/Documents/RN_22_23/praxis1/test/dynamic_content.py", line 79, in <module>
+    sys.exit(main())
+  File "/home/caro/Documents/RN_22_23/praxis1/test/dynamic_content.py", line 38, in main
+    conn.connect()
+  File "/usr/lib/python3.10/http/client.py", line 941, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Failed.
+"DynamicContent" end time: Nov 14 16:20 CET
+"DynamicContent" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 14 16:20 CET

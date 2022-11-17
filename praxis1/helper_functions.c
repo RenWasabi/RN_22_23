@@ -8,6 +8,7 @@
 unsigned short port_string_to_ul(char* port_string){
     char* invalid_input_message = "Please use a port number between 0 and 65,535 as argument.\n";
 
+
     // missing input
     if (port_string == NULL){
         printf(invalid_input_message);
