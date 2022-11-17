@@ -8,14 +8,14 @@
 #include <netinet/in.h>
 #include <errno.h>
 
+#define BACKLOG 20 // how many incoming requests can be queued before accept()
+
 
 int main(int argc, char** argv) {
     // Start here :)
     /* ACHTUNG: Beej's Guide to Network Programming wurde als Referenz benutzt,
      * während Kopien vermieden wurden, können dennoch einige Stellen
      * Ähnlichkeit haben. */
-
-    printf("Input Port: %s\n", argv[1]);
 
     // initialize the addrinfo structure for the listening socket
     struct addrinfo hints;
@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     hints.ai_socktype = SOCK_STREAM; // TCP streaming socket
     hints.ai_flags = AI_PASSIVE; // socket for listening on machine's ip
 
-    // MISSING ERROR CHECKING for invalid argv[1] input
+    // MISSING ERROR CHECKING for invalid argv[1] input (both if number and if range is that of short)
     int gai_error_code = getaddrinfo(NULL, argv[1], &hints, &listener_addrinfo);
     if (gai_error_code != 0){
         printf("Error calling getaddrinfo: %s\n", gai_strerror(gai_error_code));
@@ -70,8 +70,6 @@ int main(int argc, char** argv) {
         printf("Error calling socket()\n");
         exit(1);
     }
-    printf("Created Listener Socket. Socket-ID: %d\n", listener_fd);
-
 
     // END OF IP-ADDRESS TESTING BLOCK
     /* This code prints the IP-Address associated with the listener socket.
@@ -109,7 +107,28 @@ int main(int argc, char** argv) {
         perror("Error meaning: ");
         exit(1);
     }
-    printf("Bind() successful\n");
+
+    errno = 0;
+    if (listen(listener_fd, BACKLOG) < 0){
+        printf("Error calling listen()");
+        perror("Error: ");
+        exit(1);
+    }
+    // IDEALLY: replace argv[1] by the actual sin_port/sin6_port
+    printf("Socket %d listening on port %s.\n", listener_fd, argv[1]);
+
+
+    // for storing information about the client (storage is IP version agnostic)
+    struct sockaddr_storage client_addr;
+    socklen_t client_addrlen;
+    errno = 0;
+    // the following line is again taken from Beej's Guide to Network Programming
+    int connection_fd = accept(listener_fd, (struct sockaddr*)&client_addr, &client_addrlen);
+    if (connection_fd < 0){
+        perror("Error on calling accept(): ");
+        exit(1);
+    }
+    printf("Accepted request on new socket: %d\n", connection_fd);
 
 
 
