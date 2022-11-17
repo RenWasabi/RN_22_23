@@ -6,6 +6,7 @@
 #include <string.h> // for memset
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <errno.h>
 
 
 int main(int argc, char** argv) {
@@ -33,6 +34,35 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
+    /*
+    struct addrinfo* gai_tmp;
+    for (gai_tmp = listener_addrinfo; gai_tmp != NULL; gai_tmp = gai_tmp->ai_next){
+        void* addr;
+        char* ipver;
+        uint16_t port_nr;
+        struct sockaddr *listener_sockaddr = gai_tmp->ai_addr;
+        if (listener_addrinfo->ai_family == AF_INET){
+            struct sockaddr_in* listen_ipv4 =(struct sockaddr_in*) listener_sockaddr;
+            addr = &(listen_ipv4->sin_addr);
+            ipver = "IPv4";
+            port_nr = ntohs(listen_ipv4->sin_port); // convert port from network byte order to host
+        }
+        else {
+            struct sockaddr_in6* listen_ipv6 = (struct sockaddr_in6*) listener_sockaddr;
+            addr = &(listen_ipv6->sin6_addr);
+            ipver = "IPv6";
+            port_nr = ntohs(listen_ipv6->sin6_port); // convert port from network byte order to host
+        }
+
+        int ip_buf_len = 50;
+        char* ip_address = calloc(ip_buf_len,sizeof(char));
+        inet_ntop(gai_tmp->ai_family, addr, ip_address, ip_buf_len);
+        printf("%s: %s\n", ipver, ip_address);
+        printf("corresponding port: %d\n", port_nr);
+        // END OF IP-ADDRESS TESTING BLOCK
+        }
+        */
+
     // create listener socket
     // MISSING iterating over linked list starting add listener_addrinfo in case first result doesn't work
     int listener_fd = socket(listener_addrinfo->ai_family, listener_addrinfo->ai_socktype, listener_addrinfo->ai_protocol);
@@ -48,6 +78,7 @@ int main(int argc, char** argv) {
      * It's for testing purposes.
      * Except for some deviation in the naming, the code is directly taken from
      * Beej's Guide to Network Programming, section 3.4 IP Addresses, Part Deux */
+    /*
     void* addr;
     char* ipver;
     struct sockaddr *listener_sockaddr = listener_addrinfo->ai_addr;
@@ -67,13 +98,19 @@ int main(int argc, char** argv) {
     inet_ntop(listener_addrinfo->ai_family, addr, ip_address, ip_buf_len);
     printf("%s: %s\n", ipver, ip_address);
     // END OF IP-ADDRESS TESTING BLOCK
+     */
 
 
     // bind listener socket to port
+    errno = 0;
     if (bind(listener_fd, listener_addrinfo->ai_addr, listener_addrinfo->ai_addrlen) < 0){
         printf("Error calling bind()\n");
+        printf("errno after bind: %d\n", errno);
+        perror("Error meaning: ");
         exit(1);
     }
+    printf("Bind() successful\n");
+
 
 
 
