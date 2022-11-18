@@ -125,10 +125,46 @@ int main(int argc, char** argv) {
     // the following line is again taken from Beej's Guide to Network Programming
     int connection_fd = accept(listener_fd, (struct sockaddr*)&client_addr, &client_addrlen);
     if (connection_fd < 0){
-        perror("Error on calling accept(): ");
+        perror("Error on calling accept() ");
         exit(1);
     }
     printf("Accepted request on new socket: %d\n", connection_fd);
+
+    // aus dem Beispiel in der VL
+    char buffer[1];
+    char* reply_msg = "Reply\n";
+    // recv() / send()
+    /*
+    while(1) {
+        if((int recvd_bytes = recv(connection_fd, buffer, sizeof(buffer), 0)) == -1){
+            printf("Error while receiving from client.\n");
+            exit(1);}
+        if(send(connection_fd, reply_msg, sizeof(reply_msg), 0) < 0) {
+            exit(1);
+        }
+        */
+
+        while(1) {
+            errno = 0;
+            int received_bytes = recv(connection_fd, buffer, sizeof(buffer), 0);
+            if (received_bytes < 0) {
+                perror("Error while receiving: ");
+                exit(1);
+            } else if (received_bytes == 0){
+                printf("The client closed the connection.\n");
+                close(connection_fd);
+                exit(1);
+            } else {
+                printf("Received %d bytes from client.\n", received_bytes);
+            }
+            if(send(connection_fd, reply_msg, sizeof(reply_msg), 0) < 0) {
+                exit(1);
+            }
+        }
+
+        //close(listener_fd);
+
+
 
 
 
