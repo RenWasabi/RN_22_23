@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
     printf("Accepted request on new socket: %d\n", connection_fd);
 
     // aus dem Beispiel in der VL
-    char buffer[1];
+    char buffer[10];
     char* reply_msg = "Reply\n";
     // recv() / send()
     /*
@@ -152,12 +152,13 @@ int main(int argc, char** argv) {
                 exit(1);
             } else if (received_bytes == 0){
                 printf("The client closed the connection.\n");
-                close(connection_fd);
+                //close(connection_fd);
                 exit(1);
             } else {
                 printf("Received %d bytes from client.\n", received_bytes);
+                printf("Received: %s\n", buffer);
             }
-            if(send(connection_fd, reply_msg, sizeof(reply_msg), 0) < 0) {
+            if(send(connection_fd, reply_msg, sizeof(reply_msg)-1, 0) < 0) {
                 exit(1);
             }
         }
