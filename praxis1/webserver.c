@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
 
     // aus dem Beispiel in der VL
     char buffer[10];
-    char* reply_msg = "Reply\n";
+    char* reply_msg = "Reply\r\n";
     // recv() / send()
     /*
     while(1) {
