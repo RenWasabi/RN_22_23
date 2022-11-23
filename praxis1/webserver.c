@@ -19,7 +19,6 @@ int cmp_buffend_terminator(char* buffer, int valid_bytes, char* terminator, int 
     char* last_bytes = malloc(terminator_len* sizeof(char));
     strncpy(last_bytes, buffer+valid_bytes-terminator_len, terminator_len);
     int strings_same = 0;
-    printf("Last %d Bytes: %s\n", terminator_len, last_bytes);
     if (strncmp(last_bytes, terminator, terminator_len) == 0){
         strings_same = 1;
     }
@@ -145,15 +144,19 @@ int main(int argc, char** argv) {
                 } else if (received_bytes >= sizeof(buffer)){
                     printf("Packet fills buffer, requires separate handling.\n");
                 } else {
-
-                    printf("Last 4 Bytes identical to terminator? %d\n",
-                           cmp_buffend_terminator(buffer, received_bytes, http_terminator, terminator_length) );
+                    //printf("Last 4 Bytes identical to terminator? %d\n",
+                    //       cmp_buffend_terminator(buffer, received_bytes, http_terminator, terminator_length) );
+                    if (cmp_buffend_terminator(buffer, received_bytes, http_terminator, terminator_length) == 0){
+                        printf("Not a valid HTTP request.\n");
+                    } else {
+                        if(send(connection_fd, reply_msg, sizeof(reply_msg)-1, 0) < 0) {
+                            exit(1);}
+                    }
                 }
 
 
             }
-            if(send(connection_fd, reply_msg, sizeof(reply_msg)-1, 0) < 0) {
-                exit(1);}
+
         }
 
         //close(listener_fd);
