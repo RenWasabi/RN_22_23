@@ -9,7 +9,22 @@
 #include <errno.h>
 
 #define BACKLOG 20 // how many incoming requests can be queued before accept()
+#define BUFFER_SIZE 100 // size of the char buffer that recv() writes client requests to
 
+/* compare whether the end of the valid buffer matches a specified terminator sequene
+ * valid buffer is specified by how many bytes were received (=> written to buffer)
+ * with recv() */
+int cmp_buffend_terminator(char* buffer, int valid_bytes, char* terminator, int terminator_len){
+    // fill last_bytes with the last <terminator_len> bytes copied into the buffer in last recv()
+    char* last_bytes = malloc(terminator_len* sizeof(char));
+    strncpy(last_bytes, buffer+valid_bytes-terminator_len, terminator_len);
+    int strings_same = 0;
+    printf("Last %d Bytes: %s\n", terminator_len, last_bytes);
+    if (strncmp(last_bytes, terminator, terminator_len) == 0){
+        strings_same = 1;
+    }
+    return strings_same;
+}
 
 int main(int argc, char** argv) {
     // Start here :)
@@ -71,34 +86,6 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
-    // END OF IP-ADDRESS TESTING BLOCK
-    /* This code prints the IP-Address associated with the listener socket.
-     * It's for testing purposes.
-     * Except for some deviation in the naming, the code is directly taken from
-     * Beej's Guide to Network Programming, section 3.4 IP Addresses, Part Deux */
-    /*
-    void* addr;
-    char* ipver;
-    struct sockaddr *listener_sockaddr = listener_addrinfo->ai_addr;
-    if (listener_addrinfo->ai_family == AF_INET){
-        struct sockaddr_in* listen_ipv4 =(struct sockaddr_in*) listener_sockaddr;
-        addr = &(listen_ipv4->sin_addr);
-        ipver = "IPv4";
-    }
-    else {
-        struct sockaddr_in6* listen_ipv6 = (struct sockaddr_in6*) listener_sockaddr;
-        addr = &(listen_ipv6->sin6_addr);
-        ipver = "IPv6";
-    }
-
-    int ip_buf_len = 50;
-    char* ip_address = calloc(ip_buf_len,sizeof(char));
-    inet_ntop(listener_addrinfo->ai_family, addr, ip_address, ip_buf_len);
-    printf("%s: %s\n", ipver, ip_address);
-    // END OF IP-ADDRESS TESTING BLOCK
-     */
-
-
     // bind listener socket to port
     errno = 0;
     if (bind(listener_fd, listener_addrinfo->ai_addr, listener_addrinfo->ai_addrlen) < 0){
@@ -130,19 +117,14 @@ int main(int argc, char** argv) {
     }
     printf("Accepted request on new socket: %d\n", connection_fd);
 
+    // recv und send
     // aus dem Beispiel in der VL
-    char buffer[10];
+    char buffer[BUFFER_SIZE];
     char* reply_msg = "Reply\r\n";
-    // recv() / send()
-    /*
-    while(1) {
-        if((int recvd_bytes = recv(connection_fd, buffer, sizeof(buffer), 0)) == -1){
-            printf("Error while receiving from client.\n");
-            exit(1);}
-        if(send(connection_fd, reply_msg, sizeof(reply_msg), 0) < 0) {
-            exit(1);
-        }
-        */
+
+    char* http_terminator = "\r\n\r\n";
+    int terminator_length = 4;
+    printf("Terminator length: %d\n", terminator_length);
 
         while(1) {
             errno = 0;
@@ -157,10 +139,21 @@ int main(int argc, char** argv) {
             } else {
                 printf("Received %d bytes from client.\n", received_bytes);
                 printf("Received: %s\n", buffer);
+                // test for http packet
+                if (received_bytes < terminator_length+1){
+                    printf("Too short to be valid HTTP packet.\n");
+                } else if (received_bytes >= sizeof(buffer)){
+                    printf("Packet fills buffer, requires separate handling.\n");
+                } else {
+
+                    printf("Last 4 Bytes identical to terminator? %d\n",
+                           cmp_buffend_terminator(buffer, received_bytes, http_terminator, terminator_length) );
+                }
+
+
             }
             if(send(connection_fd, reply_msg, sizeof(reply_msg)-1, 0) < 0) {
-                exit(1);
-            }
+                exit(1);}
         }
 
         //close(listener_fd);
