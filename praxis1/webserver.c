@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <errno.h>
+#include <unistd.h> // for closing file descriptors with close()
 
 #define BACKLOG 20 // how many incoming requests can be queued before accept()
 #define BUFFER_SIZE 100 // size of the char buffer that recv() writes client requests to
@@ -67,6 +68,8 @@ buf_struct* buf_struct_expand(buf_struct* old_buf){
 /* compare whether the end of the valid buffer matches a specified terminator sequene
  * valid buffer is specified by how many bytes were received (=> written to buffer)
  * with recv() */
+// REDUNDANT! terminator not only at the end of received buffer if several requests
+// received at once
 int cmp_buffend_terminator(char* buffer, int valid_bytes, char* terminator, int terminator_len){
     // fill last_bytes with the last <terminator_len> bytes copied into the buffer in last recv()
     char* last_bytes = malloc(terminator_len* sizeof(char));
@@ -78,6 +81,15 @@ int cmp_buffend_terminator(char* buffer, int valid_bytes, char* terminator, int 
     return strings_same;
 }
 
+// reply_socket is the socket that the reply will be send to
+int process_request(char* request, int req_len, int reply_socket){
+    printf("Received request of length %d:\n%s\n", req_len, request);
+    char* reply_msg = "Reply\r\n";
+    if(send(reply_socket, reply_msg, sizeof(reply_msg)-1, 0) < 0) {
+        exit(1);}
+    return 0;
+}
+
 
 
 int main(int argc, char** argv) {
@@ -85,13 +97,6 @@ int main(int argc, char** argv) {
     /* ACHTUNG: Beej's Guide to Network Programming wurde als Referenz benutzt,
      * während Kopien vermieden wurden, können dennoch einige Stellen
      * Ähnlichkeit haben. */
-
-    // TEST
-    buf_struct* req_buf = buf_struct_init(40);
-    strncpy(req_buf->buffer, "Ein Test-String\n", sizeof("Ein Test-String\n"));
-    req_buf->used_space = sizeof ("Ein Test-String\n");
-    printf(req_buf->buffer);
-    req_buf = buf_struct_expand(req_buf);
 
     // initialize the addrinfo structure for the listening socket
     struct addrinfo hints;
@@ -180,17 +185,88 @@ int main(int argc, char** argv) {
 
     // recv und send
     // aus dem Beispiel in der VL
-    char buffer[BUFFER_SIZE];
-    char* reply_msg = "Reply\r\n";
+
+    // the main buffer to receive the stream in
+    buf_struct* recv_buf = buf_struct_init(BUFFER_SIZE);
 
     char* http_terminator = "\r\n\r\n";
-    int terminator_length = 4;
-    printf("Terminator length: %d\n", terminator_length);
+    int terminator_length = 4; // otherwise the \n will be treated as two symbols
+
+    int recv_buf_fully_processed = 0; // controlling the scan loop of recv buffer
+
+    // outer recv loop (primary buffer)
+    while(1){
+        errno = 0;
+        int received_bytes = recv(connection_fd, recv_buf->buffer, recv_buf->available_space, 0);
+        recv_buf->used_space = received_bytes;
+        // recv() failed
+        if (received_bytes < 0) {
+            perror("Error while receiving: ");
+            close(connection_fd);
+            close(listener_fd);
+            exit(1);
+            // client closed connection
+        }
+        if (received_bytes == 0){
+            printf("The client closed the connection.\n");
+            close(connection_fd);
+            close(listener_fd);
+            exit(1);
+        }
+
+        // data was received successfully
+        printf("Received %d bytes from client.\n", received_bytes);
+        printf("Received: %s\n", recv_buf->buffer);
+
+        // scan the recv buffer
+        while(recv_buf->scanner_index <= recv_buf->used_space-terminator_length){
+
+            /* terminator_present == 1:
+             * => the terminator sequence is in the recv buffer, starts at scanner index */
+            int terminator_present = 0;
+            if (strncmp(recv_buf->buffer+recv_buf->scanner_index, http_terminator, terminator_length) == 0){
+                terminator_present = 1;
+            }
+
+            // process the request if it is not empty
+            if (terminator_present == 1){
+                if (recv_buf->scanner_index == recv_buf->req_begin_index){
+                    fprintf(stderr, "Terminator recognized but not preceded but request.\n");
+                    // MISSING ERROR HANDLING
+                    close(connection_fd);
+                    close(listener_fd);
+                    exit(1);
+                } else {
+                    process_request(recv_buf->buffer, recv_buf->scanner_index-recv_buf->req_begin_index, connection_fd);
+                }
+
+                if (recv_buf->scanner_index == recv_buf->used_space-terminator_length){
+                    // no next request in same recv possible, no more scanning needed
+                    recv_buf_fully_processed = 1;
+                } else {
+                    // beginning of next request (if present) will be directly after end of current
+                    recv_buf->req_begin_index = recv_buf->scanner_index+terminator_length;
+                }
+
+            }
+
+            recv_buf->scanner_index++;
+        }
+
+        if (recv_buf_fully_processed == 1){
+            printf("Recv buf has been fully processed.\n");
+            continue; // go on with receiving new
+        }
+        printf("Unprocessed content remains in recv buffer, but no request detected.\n");
 
 
+    }
+
+
+        /* OLD SEND RECV LOOP
         while(1) {
             errno = 0;
-            int received_bytes = recv(connection_fd, buffer, sizeof(buffer), 0);
+            int received_bytes = recv(connection_fd, recv_buf->buffer, recv_buf->available_space, 0);
             // recv() failed
             if (received_bytes < 0) {
                 perror("Error while receiving: ");
@@ -203,16 +279,16 @@ int main(int argc, char** argv) {
             // data was received successfully
             } else {
                 printf("Received %d bytes from client.\n", received_bytes);
-                printf("Received: %s\n", buffer);
+                printf("Received: %s\n", recv_buf->buffer);
                 // test for http packet
                 if (received_bytes < terminator_length+1){
                     printf("Too short to be valid HTTP packet.\n");
-                } else if (received_bytes >= sizeof(buffer)){
+                } else if (received_bytes >= recv_buf->available_space){
                     printf("Packet fills buffer, requires separate handling.\n");
                 } else {
                     //printf("Last 4 Bytes identical to terminator? %d\n",
                     //       cmp_buffend_terminator(buffer, received_bytes, http_terminator, terminator_length) );
-                    if (cmp_buffend_terminator(buffer, received_bytes, http_terminator, terminator_length) == 0){
+                    if (cmp_buffend_terminator(recv_buf->buffer, received_bytes, http_terminator, terminator_length) == 0){
                         printf("Not a valid HTTP request.\n");
                     } else {
                         printf("Valid HTML packet.\n");
@@ -224,7 +300,7 @@ int main(int argc, char** argv) {
 
             }
 
-        }
+        }   */
 
         //close(listener_fd);
 

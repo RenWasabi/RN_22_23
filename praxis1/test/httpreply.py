@@ -40,7 +40,8 @@ def main():
         conn.send('Request\r\n\r\n'.encode())
         time.sleep(.5)  # Attempt to gracefuly handle all kinds of multi-packet replies...
         reply = conn.recv(1024)
-        return EXIT_SUCCESS if re.match(br'HTTP/1.[01] 400.*\r\n\r\n', reply) else EXIT_FAILURE
+        print(reply)
+        return EXIT_SUCCESS if re.match(br'HTTP/1.[01] 400.*\r\n\r\n', reply, re.DOTALL) else EXIT_FAILURE
 
 
 if __name__ == '__main__':

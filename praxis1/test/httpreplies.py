@@ -39,8 +39,9 @@ def main():
 
         conn.request('HEAD', '/index.html')
         reply = conn.getresponse()
-        reply.read()
+        r = reply.read()
         if reply.status != 501:
+            print("HEAD did not reply with '501'")
             return EXIT_FAILURE
 
         conn.request('GET', '/index.html')

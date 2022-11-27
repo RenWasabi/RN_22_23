@@ -43,14 +43,20 @@ def main():
         }.items():
             conn.request('GET', path)
             reply = conn.getresponse()
-            if reply.status != 200 or reply.read() != content:
+            payload = reply.read()
+            if reply.status != 200 or payload != content:
                 return EXIT_FAILURE
 
-        for path in ['/static/other', '/static/anything', '/static/else']:
+        for path in [
+            '/static/other',
+            '/static/anything',
+            '/static/else'
+        ]:
             conn.request('GET', path)
             reply = conn.getresponse()
+            reply.length = 0  # Convince `http.client` to handle no-content 404s properly
             reply.read()
-            if response.status != 404:
+            if reply.status != 404:
                 return EXIT_FAILURE
 
         return EXIT_SUCCESS

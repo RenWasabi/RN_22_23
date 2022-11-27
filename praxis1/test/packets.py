@@ -37,7 +37,9 @@ def main():
         conn = socket.create_connection(('localhost', args.port), timeout=2)
         conn.settimeout(.5)
         conn.send('Request1\r\n\r\n'.encode())
+        time.sleep(.5)
         conn.send('Request\r\n2\r\n'.encode())
+        time.sleep(.5)
         conn.send('\r\n'.encode())
         time.sleep(.5)  # Attempt to gracefuly handle all kinds of multi-packet replies...
         replies = conn.recv(1024).split(b'\r\n\r\n')
