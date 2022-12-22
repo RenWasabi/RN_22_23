@@ -194,7 +194,7 @@ int main(int argc, char** argv) {
 
     int recv_buf_fully_processed = 0; // controlling the scan loop of recv buffer
 
-    // outer recv loop (primary buffer)
+    // OUTER RECV LOOP (PRIMARY BUFFER)
     while(1){
         errno = 0;
         int received_bytes = recv(connection_fd, recv_buf->buffer, recv_buf->available_space, 0);
@@ -218,7 +218,9 @@ int main(int argc, char** argv) {
         printf("Received %d bytes from client.\n", received_bytes);
         printf("Received: %s\n", recv_buf->buffer);
 
+        int remaining = 0;
         // scan the recv buffer
+        RECV_SCAN:
         while(recv_buf->scanner_index <= recv_buf->used_space-terminator_length){
 
             /* terminator_present == 1:
@@ -237,7 +239,7 @@ int main(int argc, char** argv) {
                     close(listener_fd);
                     exit(1);
                 } else {
-                    process_request(recv_buf->buffer, recv_buf->scanner_index-recv_buf->req_begin_index, connection_fd);
+                    process_request(recv_buf->buffer, recv_buf->scanner_index-recv_buf->req_begin_index+terminator_length, connection_fd);
                 }
 
                 if (recv_buf->scanner_index == recv_buf->used_space-terminator_length){
@@ -257,10 +259,93 @@ int main(int argc, char** argv) {
             printf("Recv buf has been fully processed.\n");
             continue; // go on with receiving new
         }
+
+        /* scanned to end of valid buffer, still no terminator detected
+         * => store content of buffer in secondary buffer and continue receiving
+         * into this one, and scanning it, until full request is recognized */
         printf("Unprocessed content remains in recv buffer, but no request detected.\n");
 
+        // create a secondary buffer for processing this request
+        buf_struct* req_buf = buf_struct_init(recv_buf->available_space*2);
+        // copy content of recv buffer into req buffer
+        strncpy(req_buf->buffer, recv_buf->buffer, recv_buf->used_space);
+        req_buf->used_space = recv_buf->used_space;
 
-    }
+        // INNER RECV LOOP (SECONDARY BUFFER)
+        int terminator_present2 = 0;
+        while(1){ // DIFFERENT CONDITION?
+            errno = 0;
+            int received_bytes = recv(connection_fd, recv_buf->buffer, recv_buf->available_space, 0);
+            recv_buf->used_space = received_bytes;
+            // recv() failed
+            if (received_bytes < 0) {
+                perror("Error while receiving: ");
+                close(connection_fd);
+                close(listener_fd);
+                exit(1);
+                // client closed connection
+            }
+            if (received_bytes == 0){
+                printf("The client closed the connection.\n");
+                close(connection_fd);
+                close(listener_fd);
+                exit(1);
+            }
+            // data was received successfully
+            printf("Received %d bytes from client.\n", received_bytes);
+            printf("Received: %s\n", recv_buf->buffer);
+            // test if req_buffer has enough space to fit the newly received content in addition to the old content
+            if (req_buf->available_space-req_buf->used_space < received_bytes){
+                // not enough space -> expand
+                req_buf = buf_struct_expand(req_buf);
+            }
+            // copy newly received content to the end of req_buf
+            strncpy(req_buf->buffer+req_buf->used_space, recv_buf->buffer, recv_buf->used_space);
+            req_buf->used_space += recv_buf->used_space;
+
+            // scan req buffer
+            while(req_buf->scanner_index <= req_buf->used_space-terminator_length){
+
+                // SHAKY
+                if (strncmp(req_buf->buffer+req_buf->scanner_index, http_terminator, terminator_length) == 0){
+                    terminator_present2 = 1;
+                }
+                // process the request if it is not empty
+                if (terminator_present2 == 1){
+                    if (req_buf->scanner_index == 0){
+                        fprintf(stderr, "Terminator recognized but not preceded but request.\n");
+                        // MISSING ERROR HANDLING
+                        close(connection_fd);
+                        close(listener_fd);
+                        exit(1);
+                    } else {
+                        process_request(req_buf->buffer, req_buf->scanner_index+terminator_length+1, connection_fd);
+                    }
+
+                    // how much valid content in the buffer does not belong to request? => remaining
+                    remaining = req_buf->used_space-(req_buf->scanner_index+terminator_length);
+                    int req_buf_fully_processed = 0;
+                    if (remaining == 0){
+                        req_buf_fully_processed = 1;
+                    } else {
+                        strncpy(recv_buf->buffer, req_buf->buffer+(req_buf->used_space-remaining), remaining); // OFF BY ONE
+                        recv_buf->used_space = remaining;
+                    }
+                    buf_struct_free(req_buf);
+                    break; //no more scanning
+                }
+            } // end inner scan loop
+            /* inner scan loop ended
+             * exit inner recv loop, if a request was processed */
+            if (terminator_present2 == 1){
+                break;
+            }
+        } // end inner recv loop
+        if (remaining != 0){
+            goto RECV_SCAN;
+        }
+        recv_buf->scanner_index = 0;
+    } // end outer recv loop
 
 
         /* OLD SEND RECV LOOP
@@ -306,11 +391,9 @@ int main(int argc, char** argv) {
 
 
 
-
-
-
-
-    freeaddrinfo(listener_addrinfo); // free list of getaddrinfo results
+    //freeaddrinfo(listener_addrinfo); // free list of getaddrinfo results
+    close(listener_fd);
+    close(connection_fd);
 
 
 
@@ -323,5 +406,9 @@ echo -en 'GET / HTTP/1.1\r\nHost:
 example.com\r\n\r\n GET / HTTP/1.1\r\nHost:
 example.com\r\n\r\n' | nc localhost 80
  */
+
+
+
+
 
 
