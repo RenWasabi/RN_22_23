@@ -1,0 +1,2 @@
+[console_scripts]
+rnvs-tb-dht = rnvs_tb.blocks.block5:main

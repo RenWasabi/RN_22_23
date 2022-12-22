@@ -1,0 +1,6 @@
+/home/caro/Documents/RN_22_23/praxis2/cmake-build-debug/CMakeFiles/client.dir
+/home/caro/Documents/RN_22_23/praxis2/cmake-build-debug/CMakeFiles/peer.dir
+/home/caro/Documents/RN_22_23/praxis2/cmake-build-debug/CMakeFiles/package.dir
+/home/caro/Documents/RN_22_23/praxis2/cmake-build-debug/CMakeFiles/package_source.dir
+/home/caro/Documents/RN_22_23/praxis2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/caro/Documents/RN_22_23/praxis2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

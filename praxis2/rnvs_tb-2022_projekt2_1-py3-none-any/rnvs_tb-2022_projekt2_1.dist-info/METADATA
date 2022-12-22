@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: rnvs-tb
+Version: 2022-projekt2-1
+Summary: TU Berlin RNVS course testbenches
+Author: Sebastian Bräuer
+Author-email: braeuer@tkn.tu-berlin.de
+Requires-Dist: docker (>=3.0.0)
+
