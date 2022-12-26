@@ -8,6 +8,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "scratch1.h" // for testing
 
 /**
  * @brief Read data from stdin.
@@ -113,6 +114,10 @@ int connect_socket(char *hostname, char *port) {
  * @param argv The arguments.
  */
 int main(int argc, char **argv) {
+    // for testing START
+    client_test();
+    // for testing END
+
     if (argc < 5) {
         fprintf(stderr, "Not enough args!\n");
         return -1;
