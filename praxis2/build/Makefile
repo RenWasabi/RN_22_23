@@ -159,6 +159,24 @@ peer/fast:
 .PHONY : peer/fast
 
 # target to build an object file
+include/scratch1.o:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/include/scratch1.o
+	$(MAKE) -f CMakeFiles/peer.dir/build.make CMakeFiles/peer.dir/include/scratch1.o
+.PHONY : include/scratch1.o
+
+# target to preprocess a source file
+include/scratch1.i:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/include/scratch1.i
+	$(MAKE) -f CMakeFiles/peer.dir/build.make CMakeFiles/peer.dir/include/scratch1.i
+.PHONY : include/scratch1.i
+
+# target to generate assembly for a file
+include/scratch1.s:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/include/scratch1.s
+	$(MAKE) -f CMakeFiles/peer.dir/build.make CMakeFiles/peer.dir/include/scratch1.s
+.PHONY : include/scratch1.s
+
+# target to build an object file
 src/client.o:
 	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/client.o
 .PHONY : src/client.o
@@ -190,16 +208,19 @@ src/hash_table.s:
 
 # target to build an object file
 src/neighbour.o:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/neighbour.o
 	$(MAKE) -f CMakeFiles/peer.dir/build.make CMakeFiles/peer.dir/src/neighbour.o
 .PHONY : src/neighbour.o
 
 # target to preprocess a source file
 src/neighbour.i:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/neighbour.i
 	$(MAKE) -f CMakeFiles/peer.dir/build.make CMakeFiles/peer.dir/src/neighbour.i
 .PHONY : src/neighbour.i
 
 # target to generate assembly for a file
 src/neighbour.s:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/neighbour.s
 	$(MAKE) -f CMakeFiles/peer.dir/build.make CMakeFiles/peer.dir/src/neighbour.s
 .PHONY : src/neighbour.s
 
@@ -296,6 +317,9 @@ help:
 	@echo "... client"
 	@echo "... rebuild_cache"
 	@echo "... peer"
+	@echo "... include/scratch1.o"
+	@echo "... include/scratch1.i"
+	@echo "... include/scratch1.s"
 	@echo "... src/client.o"
 	@echo "... src/client.i"
 	@echo "... src/client.s"

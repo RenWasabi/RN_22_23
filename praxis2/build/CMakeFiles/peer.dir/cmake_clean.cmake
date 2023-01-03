@@ -6,6 +6,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/peer.dir/src/hash_table.o"
   "CMakeFiles/peer.dir/src/neighbour.o"
   "CMakeFiles/peer.dir/src/requests.o"
+  "CMakeFiles/peer.dir/include/scratch1.o"
   "peer.pdb"
   "peer"
 )

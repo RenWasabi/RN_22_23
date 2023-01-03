@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/mnt/src/include/scratch1.c" "/mnt/src/build/CMakeFiles/peer.dir/include/scratch1.o"
   "/mnt/src/src/hash_table.c" "/mnt/src/build/CMakeFiles/peer.dir/src/hash_table.o"
   "/mnt/src/src/neighbour.c" "/mnt/src/build/CMakeFiles/peer.dir/src/neighbour.o"
   "/mnt/src/src/packet.c" "/mnt/src/build/CMakeFiles/peer.dir/src/packet.o"

@@ -2,6 +2,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/client.dir/src/client.o"
   "CMakeFiles/client.dir/src/packet.o"
   "CMakeFiles/client.dir/src/util.o"
+  "CMakeFiles/client.dir/include/scratch1.o"
+  "CMakeFiles/client.dir/src/neighbour.o"
   "client.pdb"
   "client"
 )

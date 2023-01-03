@@ -43,6 +43,32 @@ void print_table_entry(htable* entry){
     printf("Hash value: %d\n", hashv);
 }
 
+void print_packet(packet* packet){
+    printf("---------------------------------------------------------\n");
+    printf("PACKET:\n");
+    printf("Flags: %b\n", packet->flags);
+    printf("Keylen: %d\n", ntohs(packet->key_len));
+    printf("Value_len: %d\n", ntohs(packet->value_len));
+    if (packet->key_len <= 0){
+        printf("No key.\n");
+    } else {
+        printf("Key: %s\n", packet->key);
+    }
+    if (packet->value_len <= 0){
+        printf("No value.\n");
+    } else {
+        printf("Value: %s\n", packet->value);
+    }
+    printf("Hash_Id: %d\n", ntohs(packet->hash_id));
+    printf("Node_Id: %d\n", ntohs(packet->node_id));
+    printf("Node_Ip: %d\n", ntohl(packet->node_ip));
+    printf("Node_Port: %d\n", ntohs(packet->node_port));
+    printf("---------------------------------------------------------\n");
+
+
+
+}
+
 int test_peer_is_responsible(uint16_t pred_id, uint16_t peer_id, uint16_t hash_id, int desired_output){
     if (peer_is_responsible(pred_id, peer_id, hash_id) == desired_output){
         return 1;
@@ -124,6 +150,16 @@ int client_test(){
 
     htable* test1_entry1 = create_entry(testkey1, testvalue1);
     print_table_entry(test1_entry1);
+
+
+
+    return 0;
+}
+
+// for testing functions in a peer process
+int peer_test(){
+    printf("Test Peer.\n");
+    printf("---------------------------------------------------------\n");
 
 
 

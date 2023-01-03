@@ -26,66 +26,138 @@ This warning is for project developers.  Use -Wno-dev to suppress it.
 -- Generating done
 -- Build files have been written to: /mnt/src/build
 Scanning dependencies of target client
-[  8%] Building C object CMakeFiles/client.dir/src/client.o
-[ 16%] Building C object CMakeFiles/client.dir/src/packet.o
-[ 25%] Building C object CMakeFiles/client.dir/src/util.o
-[ 33%] Linking C executable client
-[ 33%] Built target client
+[  6%] Building C object CMakeFiles/client.dir/src/client.o
+[ 13%] Building C object CMakeFiles/client.dir/src/packet.o
+[ 20%] Building C object CMakeFiles/client.dir/src/util.o
+[ 26%] Building C object CMakeFiles/client.dir/include/scratch1.o
+/mnt/src/include/scratch1.c: In function 'create_entry':
+/mnt/src/include/scratch1.c:24:26: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+     int key_len = strlen(key);
+                          ^~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:384:15: note: expected 'const char *' but argument is of type 'unsigned char *'
+ extern size_t strlen (const char *__s)
+               ^~~~~~
+/mnt/src/include/scratch1.c:25:28: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+     int value_len = strlen(value);
+                            ^~~~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:384:15: note: expected 'const char *' but argument is of type 'unsigned char *'
+ extern size_t strlen (const char *__s)
+               ^~~~~~
+/mnt/src/include/scratch1.c:29:13: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+     strncpy(entry->key, key, key_len);
+             ^~~~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/include/scratch1.c:29:25: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+     strncpy(entry->key, key, key_len);
+                         ^~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/include/scratch1.c:32:13: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+     strncpy(entry->value, value, value_len);
+             ^~~~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/include/scratch1.c:32:27: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+     strncpy(entry->value, value, value_len);
+                           ^~~~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/include/scratch1.c: In function 'print_table_entry':
+/mnt/src/include/scratch1.c:39:28: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+     printf("Key of length %d: %s\n", entry->key_len, entry->key);
+                           ~^         ~~~~~~~~~~~~~~
+                           %ld
+/mnt/src/include/scratch1.c:40:30: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+     printf("Value of length %d: %s\n", entry->value_len, entry->value);
+                             ~^         ~~~~~~~~~~~~~~~~
+                             %ld
+/mnt/src/include/scratch1.c: In function 'client_test':
+/mnt/src/include/scratch1.c:122:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+     unsigned char* testkey1 = "testkey1";
+                               ^~~~~~~~~~
+/mnt/src/include/scratch1.c:123:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+     unsigned char* testvalue1 = "testvalue1";
+                                 ^~~~~~~~~~~~
+/mnt/src/include/scratch1.c:120:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+     htable* htable_test1 = NULL;
+             ^~~~~~~~~~~~
+[ 33%] Building C object CMakeFiles/client.dir/src/neighbour.o
+[ 40%] Linking C executable client
+[ 40%] Built target client
 Scanning dependencies of target peer
-[ 41%] Building C object CMakeFiles/peer.dir/src/peer.o
+[ 46%] Building C object CMakeFiles/peer.dir/src/peer.o
 /mnt/src/src/peer.c: In function 'forward':
-/mnt/src/src/peer.c:28:19: warning: unused parameter 'p' [-Wunused-parameter]
+/mnt/src/src/peer.c:29:19: warning: unused parameter 'p' [-Wunused-parameter]
  int forward(peer *p, packet *pack) {
                    ^
-/mnt/src/src/peer.c:28:30: warning: unused parameter 'pack' [-Wunused-parameter]
+/mnt/src/src/peer.c:29:30: warning: unused parameter 'pack' [-Wunused-parameter]
  int forward(peer *p, packet *pack) {
                               ^~~~
 /mnt/src/src/peer.c: In function 'proxy_request':
-/mnt/src/src/peer.c:41:27: warning: unused parameter 'srv' [-Wunused-parameter]
+/mnt/src/src/peer.c:42:27: warning: unused parameter 'srv' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                            ^~~
-/mnt/src/src/peer.c:41:36: warning: unused parameter 'csocket' [-Wunused-parameter]
+/mnt/src/src/peer.c:42:36: warning: unused parameter 'csocket' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                                     ^~~~~~~
-/mnt/src/src/peer.c:41:53: warning: unused parameter 'p' [-Wunused-parameter]
+/mnt/src/src/peer.c:42:53: warning: unused parameter 'p' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                                                      ^
-/mnt/src/src/peer.c:41:62: warning: unused parameter 'n' [-Wunused-parameter]
+/mnt/src/src/peer.c:42:62: warning: unused parameter 'n' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                                                               ^
-/mnt/src/src/peer.c: In function 'lookup_peer':
-/mnt/src/src/peer.c:52:26: warning: unused parameter 'hash_id' [-Wunused-parameter]
- int lookup_peer(uint16_t hash_id) {
-                          ^~~~~~~
 /mnt/src/src/peer.c: In function 'handle_own_request':
-/mnt/src/src/peer.c:65:32: warning: unused parameter 'srv' [-Wunused-parameter]
+/mnt/src/src/peer.c:81:32: warning: unused parameter 'srv' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                 ^~~
-/mnt/src/src/peer.c:65:45: warning: unused parameter 'c' [-Wunused-parameter]
+/mnt/src/src/peer.c:81:45: warning: unused parameter 'c' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                              ^
-/mnt/src/src/peer.c:65:56: warning: unused parameter 'p' [-Wunused-parameter]
+/mnt/src/src/peer.c:81:56: warning: unused parameter 'p' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                                         ^
 /mnt/src/src/peer.c: In function 'answer_lookup':
-/mnt/src/src/peer.c:77:27: warning: unused parameter 'p' [-Wunused-parameter]
+/mnt/src/src/peer.c:93:27: warning: unused parameter 'p' [-Wunused-parameter]
  int answer_lookup(packet *p, peer *n) {
                            ^
-/mnt/src/src/peer.c:77:36: warning: unused parameter 'n' [-Wunused-parameter]
+/mnt/src/src/peer.c:93:36: warning: unused parameter 'n' [-Wunused-parameter]
  int answer_lookup(packet *p, peer *n) {
                                     ^
 /mnt/src/src/peer.c: In function 'handle_packet_ctrl':
-/mnt/src/src/peer.c:122:45: warning: unused parameter 'c' [-Wunused-parameter]
+/mnt/src/src/peer.c:149:45: warning: unused parameter 'c' [-Wunused-parameter]
  int handle_packet_ctrl(server *srv, client *c, packet *p) {
                                              ^
 /mnt/src/src/peer.c: In function 'forward':
-/mnt/src/src/peer.c:30:1: warning: control reaches end of non-void function [-Wreturn-type]
+/mnt/src/src/peer.c:31:1: warning: control reaches end of non-void function [-Wreturn-type]
  }
  ^
-[ 50%] Building C object CMakeFiles/peer.dir/src/server.o
-[ 58%] Building C object CMakeFiles/peer.dir/src/packet.o
+[ 53%] Building C object CMakeFiles/peer.dir/src/server.o
+[ 60%] Building C object CMakeFiles/peer.dir/src/packet.o
 [ 66%] Building C object CMakeFiles/peer.dir/src/util.o
-[ 75%] Building C object CMakeFiles/peer.dir/src/hash_table.o
+[ 73%] Building C object CMakeFiles/peer.dir/src/hash_table.o
 /mnt/src/src/hash_table.c: In function 'htable_set':
 /mnt/src/src/hash_table.c:3:26: warning: unused parameter 'ht' [-Wunused-parameter]
  void htable_set(htable **ht, const unsigned char *key, size_t key_len,
@@ -130,20 +202,82 @@ Scanning dependencies of target peer
 /mnt/src/src/hash_table.c:14:1: warning: control reaches end of non-void function [-Wreturn-type]
  }
  ^
-[ 83%] Building C object CMakeFiles/peer.dir/src/neighbour.o
-/mnt/src/src/neighbour.c: In function 'peer_is_responsible':
-/mnt/src/src/neighbour.c:122:34: warning: unused parameter 'pred_id' [-Wunused-parameter]
- int peer_is_responsible(uint16_t pred_id, uint16_t peer_id, uint16_t hash_id) {
-                                  ^~~~~~~
-/mnt/src/src/neighbour.c:122:52: warning: unused parameter 'peer_id' [-Wunused-parameter]
- int peer_is_responsible(uint16_t pred_id, uint16_t peer_id, uint16_t hash_id) {
-                                                    ^~~~~~~
-/mnt/src/src/neighbour.c:122:70: warning: unused parameter 'hash_id' [-Wunused-parameter]
- int peer_is_responsible(uint16_t pred_id, uint16_t peer_id, uint16_t hash_id) {
-                                                                      ^~~~~~~
-/mnt/src/src/neighbour.c:124:1: warning: control reaches end of non-void function [-Wreturn-type]
- }
- ^
-[ 91%] Building C object CMakeFiles/peer.dir/src/requests.o
+[ 80%] Building C object CMakeFiles/peer.dir/src/neighbour.o
+[ 86%] Building C object CMakeFiles/peer.dir/src/requests.o
+[ 93%] Building C object CMakeFiles/peer.dir/include/scratch1.o
+/mnt/src/include/scratch1.c: In function 'create_entry':
+/mnt/src/include/scratch1.c:24:26: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+     int key_len = strlen(key);
+                          ^~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:384:15: note: expected 'const char *' but argument is of type 'unsigned char *'
+ extern size_t strlen (const char *__s)
+               ^~~~~~
+/mnt/src/include/scratch1.c:25:28: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+     int value_len = strlen(value);
+                            ^~~~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:384:15: note: expected 'const char *' but argument is of type 'unsigned char *'
+ extern size_t strlen (const char *__s)
+               ^~~~~~
+/mnt/src/include/scratch1.c:29:13: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+     strncpy(entry->key, key, key_len);
+             ^~~~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/include/scratch1.c:29:25: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+     strncpy(entry->key, key, key_len);
+                         ^~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/include/scratch1.c:32:13: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+     strncpy(entry->value, value, value_len);
+             ^~~~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/include/scratch1.c:32:27: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+     strncpy(entry->value, value, value_len);
+                           ^~~~~
+In file included from /mnt/src/include/uthash.h:31:0,
+                 from /mnt/src/include/scratch1.h:5,
+                 from /mnt/src/include/scratch1.c:4:
+/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/include/scratch1.c: In function 'print_table_entry':
+/mnt/src/include/scratch1.c:39:28: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+     printf("Key of length %d: %s\n", entry->key_len, entry->key);
+                           ~^         ~~~~~~~~~~~~~~
+                           %ld
+/mnt/src/include/scratch1.c:40:30: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+     printf("Value of length %d: %s\n", entry->value_len, entry->value);
+                             ~^         ~~~~~~~~~~~~~~~~
+                             %ld
+/mnt/src/include/scratch1.c: In function 'client_test':
+/mnt/src/include/scratch1.c:122:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+     unsigned char* testkey1 = "testkey1";
+                               ^~~~~~~~~~
+/mnt/src/include/scratch1.c:123:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+     unsigned char* testvalue1 = "testvalue1";
+                                 ^~~~~~~~~~~~
+/mnt/src/include/scratch1.c:120:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+     htable* htable_test1 = NULL;
+             ^~~~~~~~~~~~
 [100%] Linking C executable peer
 [100%] Built target peer

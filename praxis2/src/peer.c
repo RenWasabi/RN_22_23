@@ -8,6 +8,7 @@
 #include "requests.h"
 #include "server.h"
 #include "util.h"
+#include "scratch1.h" // added by me for testing
 
 // actual underlying hash table
 htable **ht = NULL;
@@ -51,6 +52,23 @@ int proxy_request(server *srv, int csocket, packet *p, peer *n) {
  */
 int lookup_peer(uint16_t hash_id) {
     /* TODO IMPLEMENT */
+    // create a lookup control packet
+    packet* lkup_packet = packet_new(); // initialize packet
+    lkup_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_LKUP; // reserved bits set to 0
+    lkup_packet->hash_id = htons(hash_id);
+    lkup_packet->node_id = htons(self->node_id);
+    lkup_packet->node_ip = htonl(peer_get_ip(self)); // !! NOT SURE IF THIS GETS THE CORRECT IP
+    lkup_packet->node_port = htons(self->port);
+
+    print_packet(lkup_packet);
+
+
+
+
+
+
+
+
     return 0;
 }
 
@@ -78,6 +96,18 @@ int answer_lookup(packet *p, peer *n) {
     /* TODO IMPLEMENT */
     return CB_REMOVE_CLIENT;
 }
+
+// after here added by me for testing: BEGIN
+// needs to be inside of peer file for accessing global variables
+void test_peer_inside(){
+    printf("inside test\n");
+    printf("%s\n", self->hostname);
+    lookup_peer(333);
+    printf("Test222\n");
+
+
+}
+// TEST END
 
 /**
  * @brief Handle a key request request from a client.
@@ -230,6 +260,14 @@ int main(int argc, char **argv) {
     *rt = NULL;
 
     srv->packet_cb = handle_packet;
+    // added by me for testing BEGIN
+    test_peer_inside();
+
+    // peer_test();
+    // TEST END
     server_run(srv);
     close(srv->socket);
 }
+
+
+// sudo -H pip install --force-reinstall rnvs_tb-2022_projekt2_1-py3-none-any.whl

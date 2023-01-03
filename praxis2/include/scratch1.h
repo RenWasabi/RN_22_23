@@ -22,7 +22,7 @@ htable* create_entry(unsigned char* key, unsigned char* value);
 // print a table entry
 void print_table_entry(htable* entry);
 
-
+void print_packet(packet* packet);
 
 
 // "MAIN"
@@ -30,3 +30,6 @@ void print_table_entry(htable* entry);
  * whatever short tests I want to perform inside
  */
 int client_test();
+
+
+int peer_test();

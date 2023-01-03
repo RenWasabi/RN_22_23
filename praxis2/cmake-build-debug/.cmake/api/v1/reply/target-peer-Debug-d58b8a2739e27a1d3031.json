@@ -91,7 +91,8 @@
 				3,
 				4,
 				5,
-				8
+				8,
+				9
 			]
 		}
 	],
@@ -130,7 +131,8 @@
 				3,
 				4,
 				5,
-				8
+				8,
+				9
 			]
 		},
 		{
@@ -194,6 +196,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/requests.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "include/scratch1.c",
 			"sourceGroupIndex" : 0
 		}
 	],
