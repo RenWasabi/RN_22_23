@@ -95,7 +95,7 @@ int lookup_peer(uint16_t hash_id) {
     // TEST END
 
     // send lookup packet to successor -> forward packet
-    if (forward(self, lkup_packet) < 0){
+    if (forward(succ, lkup_packet) < 0){
         printf("Error while forwarding lookup packet to successor.\n");
         return -1;
     }
