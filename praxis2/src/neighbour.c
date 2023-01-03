@@ -121,6 +121,15 @@ uint32_t peer_get_ip(const peer *p) {
 
 int peer_is_responsible(uint16_t pred_id, uint16_t peer_id, uint16_t hash_id) {
     /* TODO IMPLEMENT */
+    if (pred_id > peer_id && hash_id > pred_id){ // overflow
+        return 1; // peer is responsible because of overflow
+    }
+    else if ( hash_id <= peer_id && hash_id > pred_id ) { // no overflow
+        return 1; // hash id between pred id and peer id => peer responsible
+    }
+    else {
+        return 0; // peer is not responsible
+    }
 }
 
 void peer_disconnect(peer *p) {

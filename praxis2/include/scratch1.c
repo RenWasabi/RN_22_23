@@ -43,7 +43,76 @@ void print_table_entry(htable* entry){
     printf("Hash value: %d\n", hashv);
 }
 
+int test_peer_is_responsible(uint16_t pred_id, uint16_t peer_id, uint16_t hash_id, int desired_output){
+    if (peer_is_responsible(pred_id, peer_id, hash_id) == desired_output){
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+// actually testing with multiple values
+int all_tests_peer_is_responsible(){
+    int all_ok = 1; // overall result of all tests
+
+    // test 1
+    uint16_t pred_id = 138;
+    uint16_t peer_id = 202;
+    uint16_t hash_id = 111;
+    int desired_output = 0;
+    int test_result = test_peer_is_responsible(pred_id, peer_id, hash_id, desired_output);
+    printf("Test for peer_is_responsible(%d,%d,%d): %d\n", pred_id, peer_id, hash_id, test_result);
+    if (test_result == 0){
+        all_ok = 0;
+    }
+
+    // test 2 (overflow)
+    pred_id = 202;
+    peer_id = 10;
+    hash_id = 111;
+    desired_output = 0;
+    test_result = test_peer_is_responsible(pred_id, peer_id, hash_id, desired_output);
+    printf("Test for peer_is_responsible(%d,%d,%d): %d\n", pred_id, peer_id, hash_id, test_result);
+    if (test_result == 0){
+        all_ok = 0;
+    }
+
+    // test 3
+    pred_id = 10;
+    peer_id = 74;
+    hash_id = 111;
+    desired_output = 0;
+    test_result = test_peer_is_responsible(pred_id, peer_id, hash_id, desired_output);
+    printf("Test for peer_is_responsible(%d,%d,%d): %d\n", pred_id, peer_id, hash_id, test_result);
+    if (test_result == 0){
+        all_ok = 0;
+    }
+
+    // test 4
+    pred_id = 74;
+    peer_id = 138;
+    hash_id = 111;
+    desired_output = 1;
+    test_result = test_peer_is_responsible(pred_id, peer_id, hash_id, desired_output);
+    printf("Test for peer_is_responsible(%d,%d,%d): %d\n", pred_id, peer_id, hash_id, test_result);
+    if (test_result == 0){
+        all_ok = 0;
+    }
+
+    return all_ok;
+}
+
 int client_test(){
+    // unit tests
+    printf("---------------------------------------------------------\n");
+    // peer_is_responsible in neighbor
+    int test_result = all_tests_peer_is_responsible();
+    printf("All tests for peer_is_responsible: %d\n", test_result);
+    printf("---------------------------------------------------------\n");
+
+
+
+
     printf("Test.\n");
 
     /* initialize hash table as with NULL
@@ -55,6 +124,8 @@ int client_test(){
 
     htable* test1_entry1 = create_entry(testkey1, testvalue1);
     print_table_entry(test1_entry1);
+
+
 
     return 0;
 }

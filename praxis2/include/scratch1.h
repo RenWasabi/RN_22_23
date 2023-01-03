@@ -5,7 +5,7 @@
 #include "uthash.h" // for hashing
 #include "hash_table.h" // for the htable_struct
 #include <string.h> // for giving string keys and values as table entry
-
+#include "neighbour.h" // for testing peer_is_responsible()
 /* added by IDE
 #ifndef RN_PRAXIS2_SCRATCH1_H
 #define RN_PRAXIS2_SCRATCH1_H
