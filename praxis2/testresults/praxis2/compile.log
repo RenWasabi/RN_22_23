@@ -117,18 +117,6 @@ In file included from /mnt/src/include/uthash.h:31:0,
 Scanning dependencies of target peer
 [ 46%] Building C object CMakeFiles/peer.dir/src/peer.o
 /mnt/src/src/peer.c: In function 'forward':
-/mnt/src/src/peer.c:33:26: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
-     size_t packet_size = malloc(sizeof(size_t)); // will store the size of the packet returned by serialize
-                          ^~~~~~
-/mnt/src/src/peer.c:53:14: warning: passing argument 1 of 'free' makes pointer from integer without a cast [-Wint-conversion]
-         free(packet_size);
-              ^~~~~~~~~~~
-In file included from /mnt/src/include/uthash.h:30:0,
-                 from /mnt/src/include/hash_table.h:3,
-                 from /mnt/src/src/peer.c:5:
-/usr/include/stdlib.h:563:13: note: expected 'void *' but argument is of type 'size_t {aka long unsigned int}'
- extern void free (void *__ptr) __THROW;
-             ^~~~
 /mnt/src/src/peer.c:29:19: warning: unused parameter 'p' [-Wunused-parameter]
  int forward(peer *p, packet *pack) {
                    ^
@@ -155,21 +143,10 @@ In file included from /mnt/src/include/uthash.h:30:0,
 /mnt/src/src/peer.c:119:56: warning: unused parameter 'p' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                                         ^
-/mnt/src/src/peer.c: In function 'answer_lookup':
-/mnt/src/src/peer.c:131:27: warning: unused parameter 'p' [-Wunused-parameter]
- int answer_lookup(packet *p, peer *n) {
-                           ^
-/mnt/src/src/peer.c:131:36: warning: unused parameter 'n' [-Wunused-parameter]
- int answer_lookup(packet *p, peer *n) {
-                                    ^
 /mnt/src/src/peer.c: In function 'handle_packet_ctrl':
-/mnt/src/src/peer.c:188:45: warning: unused parameter 'c' [-Wunused-parameter]
+/mnt/src/src/peer.c:209:45: warning: unused parameter 'c' [-Wunused-parameter]
  int handle_packet_ctrl(server *srv, client *c, packet *p) {
                                              ^
-/mnt/src/src/peer.c: In function 'forward':
-/mnt/src/src/peer.c:60:1: warning: control reaches end of non-void function [-Wreturn-type]
- }
- ^
 [ 53%] Building C object CMakeFiles/peer.dir/src/server.o
 [ 60%] Building C object CMakeFiles/peer.dir/src/packet.o
 [ 66%] Building C object CMakeFiles/peer.dir/src/util.o

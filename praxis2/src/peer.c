@@ -30,7 +30,7 @@ int forward(peer *p, packet *pack) {
     /* TODO IMPLEMENT */
     printf("Goal: forward packet from Peer %d to Peer %d\n", self->node_id, succ->node_id);
     // send the lookup packet to the successor
-    size_t packet_size = malloc(sizeof(size_t)); // will store the size of the packet returned by serialize
+    size_t packet_size; // will store the size of the packet returned by serialize
     unsigned char* serialized_pack = packet_serialize(pack, &packet_size);
 
     // TEST BEGIN: Test if the packet was serialized correctly
@@ -50,12 +50,12 @@ int forward(peer *p, packet *pack) {
     // int sendall(int s, unsigned char *buffer, size_t buf_size)
     // s apparantly needs to be the socket of the successor to work
     if (sendall(succ->socket, serialized_pack, packet_size) < 0){
-        free(packet_size);
         printf("An error occurred while trying to send a lookup packet.\n");
         return -1;
     }
     peer_disconnect(succ);
     printf("Lookup package was sent successfully.\n");
+    return 0;
 
 }
 
@@ -130,6 +130,27 @@ int handle_own_request(server *srv, client *c, packet *p) {
  */
 int answer_lookup(packet *p, peer *n) {
     /* TODO IMPLEMENT */
+    // NOTE: when answer_lookup is triggered, the responsible peer is in the n pointer
+    // create a reply control packet
+    packet* rply_packet = packet_new(); // initialize packet
+    rply_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_RPLY; // reserved bits set to 0 // htons????
+    rply_packet->hash_id = p->hash_id;
+    rply_packet->node_id = htons(n->node_id);
+    rply_packet->node_ip = htonl(peer_get_ip(n)); // !! NOT SURE IF THIS GETS THE CORRECT IP
+    rply_packet->node_port = htons(n->port);
+
+    // TEST BEGIN
+    printf("Reply packet: \n");
+    print_packet(rply_packet);
+    // TEST END
+
+    // create the peer to send the reply to from the information in the lookup packet
+    peer* asking_peer = peer_from_packet(p);
+    // send the reply to this peer
+    if (forward(asking_peer, rply_packet) < 0){
+        printf("Error while forwarding reply packet to peer initiating lookup.\n");
+    }
+
     return CB_REMOVE_CLIENT;
 }
 
@@ -307,3 +328,4 @@ int main(int argc, char **argv) {
 
 
 // sudo -H pip install --force-reinstall rnvs_tb-2022_projekt2_1-py3-none-any.whl
+// sudo rnvs-tb-dht -s .
