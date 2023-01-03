@@ -1,20 +1,9 @@
 .
 ----------------------------------------------------------------------
-Ran 1 test in 2.160s
+Ran 1 test in 2.267s
 
 OK
-FFFFFFFFFFF
-======================================================================
-FAIL: test_forward_lookup (rnvs_tb.blocks.block5.PeerTestCase)
-Test whether the peer forwards lookup requests correctly on the ring.
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/common.py", line 36, in log_wrapper
-    return fun(*args, **kwargs)
-  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/blocks/block5.py", line 270, in test_forward_lookup
-    self.fail(f"Peer did not forward lookup to successor! Stdout: {out}, Stderr:{err}")
-AssertionError: Peer did not forward lookup to successor! Stdout: bytearray(b''), Stderr:bytearray(b'Starting server. Press any key to exit.\nDecoded control packet header: \n\tJOIN: 0\n\tNOTIFY: 0\n\tSTABILIZE: 0\n\tLOOKUP: 1\n\tREPLY: 0\nHandling control packet...\n')
-
+.FFFFFFFFF.
 ======================================================================
 FAIL: test_get_full_circle (rnvs_tb.blocks.block5.PeerTestCase)
 Tests a full sequence for client GET request that needs to be fetched from another node.
@@ -22,9 +11,9 @@ Tests a full sequence for client GET request that needs to be fetched from anoth
 Traceback (most recent call last):
   File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/common.py", line 36, in log_wrapper
     return fun(*args, **kwargs)
-  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/blocks/block5.py", line 341, in test_get_full_circle
-    self.fail(f"Did not receive a Lookup request within timeout! Stdout: {out}, Stderr:{err}")
-AssertionError: Did not receive a Lookup request within timeout! Stdout: bytearray(b''), Stderr:bytearray(b'Starting server. Press any key to exit.\nDecoded packet header: \n\tACK: 0\n\tGET: 1\n\tSET: 0\n\tDEL: 0\n\tKey Length: 23 Bytes\n\tValue Length: 0 Bytes\nHash id: 21608\nNo idea! Just looking it up!.\nUnknown AF: Connection closed.\n')
+  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/blocks/block5.py", line 343, in test_get_full_circle
+    self.assertEqual(lookup.hash_id, hash, msg='Peer requested lookup for wrong hash id!')
+AssertionError: 26708 != 21608 : Peer requested lookup for wrong hash id!
 
 ======================================================================
 FAIL: test_student_ring_long_fixed_buffer (rnvs_tb.blocks.block5.PeerTestCase)
@@ -205,18 +194,7 @@ Traceback (most recent call last):
     self.fail(f"Did not receive a GET request within timeout! Stdout: {out}, Stderr:{err}")
 AssertionError: Did not receive a GET request within timeout! Stdout: bytearray(b''), Stderr:bytearray(b"Starting server. Press any key to exit.\nDecoded packet header: \n\tACK: 0\n\tGET: 1\n\tSET: 0\n\tDEL: 0\n\tKey Length: 12 Bytes\n\tValue Length: 0 Bytes\nHash id: 18281\nSuccessor\'s business.\n")
 
-======================================================================
-FAIL: test_trigger_lookup_minimal (rnvs_tb.blocks.block5.PeerTestCase)
-Test whether a GET request from an unknown range triggers a lookup.
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/common.py", line 36, in log_wrapper
-    return fun(*args, **kwargs)
-  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/blocks/block5.py", line 193, in test_trigger_lookup_minimal
-    self.fail(msg=f"Did not receive a lookup request within timeout! Stdout: {out}, Stderr:{err}")
-AssertionError: Did not receive a lookup request within timeout! Stdout: bytearray(b''), Stderr:bytearray(b'Starting server. Press any key to exit.\nDecoded packet header: \n\tACK: 0\n\tGET: 1\n\tSET: 0\n\tDEL: 0\n\tKey Length: 18 Bytes\n\tValue Length: 0 Bytes\nHash id: 21618\nNo idea! Just looking it up!.\nUnknown AF: Connection closed.\n')
+Ran 11 tests in 51.311s
 
-----------------------------------------------------------------------
-Ran 11 tests in 59.704s
-
-FAILED (failures=11)
+FAILED (failures=9)

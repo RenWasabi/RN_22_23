@@ -28,6 +28,35 @@ peer *succ = NULL;
  */
 int forward(peer *p, packet *pack) {
     /* TODO IMPLEMENT */
+    printf("Goal: forward packet from Peer %d to Peer %d\n", self->node_id, succ->node_id);
+    // send the lookup packet to the successor
+    size_t packet_size = malloc(sizeof(size_t)); // will store the size of the packet returned by serialize
+    unsigned char* serialized_pack = packet_serialize(pack, &packet_size);
+
+    // TEST BEGIN: Test if the packet was serialized correctly
+    //packet* reverse_packet = packet_new();
+    //reverse_packet = packet_decode(serialized_lkup, packet_size);
+    //printf("Reverse engineer lookup packet from serialized data: \n");
+    //print_packet(reverse_packet); // => should be the same as the original lookup packet
+    // TEST END
+
+    // open a connection to the sucessor peer to forward to
+    if (peer_connect(succ) < 0){
+        printf("An error occured while trying to connect to the successor.\n");
+        return -1;
+    }
+    printf("Connected to successor.\n");
+
+    // int sendall(int s, unsigned char *buffer, size_t buf_size)
+    // s apparantly needs to be the socket of the successor to work
+    if (sendall(succ->socket, serialized_pack, packet_size) < 0){
+        free(packet_size);
+        printf("An error occurred while trying to send a lookup packet.\n");
+        return -1;
+    }
+    peer_disconnect(succ);
+    printf("Lookup package was sent successfully.\n");
+
 }
 
 /**
@@ -54,22 +83,29 @@ int lookup_peer(uint16_t hash_id) {
     /* TODO IMPLEMENT */
     // create a lookup control packet
     packet* lkup_packet = packet_new(); // initialize packet
-    lkup_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_LKUP; // reserved bits set to 0
+    lkup_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_LKUP; // reserved bits set to 0 // htons????
     lkup_packet->hash_id = htons(hash_id);
     lkup_packet->node_id = htons(self->node_id);
     lkup_packet->node_ip = htonl(peer_get_ip(self)); // !! NOT SURE IF THIS GETS THE CORRECT IP
     lkup_packet->node_port = htons(self->port);
 
+    // TEST BEGIN
+    printf("Lookup packet: \n");
     print_packet(lkup_packet);
+    // TEST END
 
-
-
-
-
-
+    // send lookup packet to successor -> forward packet
+    if (forward(self, lkup_packet) < 0){
+        printf("Error while forwarding lookup packet to successor.\n");
+        return -1;
+    }
+    printf("Lookup packet forwarded to successor!\n");
+    return 0;
 
 
     return 0;
+
+
 }
 
 /**
@@ -102,7 +138,7 @@ int answer_lookup(packet *p, peer *n) {
 void test_peer_inside(){
     printf("inside test\n");
     printf("%s\n", self->hostname);
-    lookup_peer(333);
+    lookup_peer(111);
     printf("Test222\n");
 
 
@@ -261,7 +297,7 @@ int main(int argc, char **argv) {
 
     srv->packet_cb = handle_packet;
     // added by me for testing BEGIN
-    test_peer_inside();
+    //test_peer_inside();
 
     // peer_test();
     // TEST END

@@ -94,14 +94,21 @@ In file included from /mnt/src/include/uthash.h:31:0,
      printf("Value of length %d: %s\n", entry->value_len, entry->value);
                              ~^         ~~~~~~~~~~~~~~~~
                              %ld
+/mnt/src/include/scratch1.c: In function 'print_packet':
+/mnt/src/include/scratch1.c:49:21: warning: unknown conversion type character 'b' in format [-Wformat=]
+     printf("Flags: %b\n", packet->flags);
+                     ^
+/mnt/src/include/scratch1.c:49:12: warning: too many arguments for format [-Wformat-extra-args]
+     printf("Flags: %b\n", packet->flags);
+            ^~~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'client_test':
-/mnt/src/include/scratch1.c:122:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:148:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testkey1 = "testkey1";
                                ^~~~~~~~~~
-/mnt/src/include/scratch1.c:123:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:149:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testvalue1 = "testvalue1";
                                  ^~~~~~~~~~~~
-/mnt/src/include/scratch1.c:120:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:146:13: warning: unused variable 'htable_test1' [-Wunused-variable]
      htable* htable_test1 = NULL;
              ^~~~~~~~~~~~
 [ 33%] Building C object CMakeFiles/client.dir/src/neighbour.o
@@ -110,48 +117,57 @@ In file included from /mnt/src/include/uthash.h:31:0,
 Scanning dependencies of target peer
 [ 46%] Building C object CMakeFiles/peer.dir/src/peer.o
 /mnt/src/src/peer.c: In function 'forward':
+/mnt/src/src/peer.c:33:26: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+     size_t packet_size = malloc(sizeof(size_t)); // will store the size of the packet returned by serialize
+                          ^~~~~~
+/mnt/src/src/peer.c:53:14: warning: passing argument 1 of 'free' makes pointer from integer without a cast [-Wint-conversion]
+         free(packet_size);
+              ^~~~~~~~~~~
+In file included from /mnt/src/include/uthash.h:30:0,
+                 from /mnt/src/include/hash_table.h:3,
+                 from /mnt/src/src/peer.c:5:
+/usr/include/stdlib.h:563:13: note: expected 'void *' but argument is of type 'size_t {aka long unsigned int}'
+ extern void free (void *__ptr) __THROW;
+             ^~~~
 /mnt/src/src/peer.c:29:19: warning: unused parameter 'p' [-Wunused-parameter]
  int forward(peer *p, packet *pack) {
                    ^
-/mnt/src/src/peer.c:29:30: warning: unused parameter 'pack' [-Wunused-parameter]
- int forward(peer *p, packet *pack) {
-                              ^~~~
 /mnt/src/src/peer.c: In function 'proxy_request':
-/mnt/src/src/peer.c:42:27: warning: unused parameter 'srv' [-Wunused-parameter]
+/mnt/src/src/peer.c:71:27: warning: unused parameter 'srv' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                            ^~~
-/mnt/src/src/peer.c:42:36: warning: unused parameter 'csocket' [-Wunused-parameter]
+/mnt/src/src/peer.c:71:36: warning: unused parameter 'csocket' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                                     ^~~~~~~
-/mnt/src/src/peer.c:42:53: warning: unused parameter 'p' [-Wunused-parameter]
+/mnt/src/src/peer.c:71:53: warning: unused parameter 'p' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                                                      ^
-/mnt/src/src/peer.c:42:62: warning: unused parameter 'n' [-Wunused-parameter]
+/mnt/src/src/peer.c:71:62: warning: unused parameter 'n' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                                                               ^
 /mnt/src/src/peer.c: In function 'handle_own_request':
-/mnt/src/src/peer.c:81:32: warning: unused parameter 'srv' [-Wunused-parameter]
+/mnt/src/src/peer.c:119:32: warning: unused parameter 'srv' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                 ^~~
-/mnt/src/src/peer.c:81:45: warning: unused parameter 'c' [-Wunused-parameter]
+/mnt/src/src/peer.c:119:45: warning: unused parameter 'c' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                              ^
-/mnt/src/src/peer.c:81:56: warning: unused parameter 'p' [-Wunused-parameter]
+/mnt/src/src/peer.c:119:56: warning: unused parameter 'p' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                                         ^
 /mnt/src/src/peer.c: In function 'answer_lookup':
-/mnt/src/src/peer.c:93:27: warning: unused parameter 'p' [-Wunused-parameter]
+/mnt/src/src/peer.c:131:27: warning: unused parameter 'p' [-Wunused-parameter]
  int answer_lookup(packet *p, peer *n) {
                            ^
-/mnt/src/src/peer.c:93:36: warning: unused parameter 'n' [-Wunused-parameter]
+/mnt/src/src/peer.c:131:36: warning: unused parameter 'n' [-Wunused-parameter]
  int answer_lookup(packet *p, peer *n) {
                                     ^
 /mnt/src/src/peer.c: In function 'handle_packet_ctrl':
-/mnt/src/src/peer.c:149:45: warning: unused parameter 'c' [-Wunused-parameter]
+/mnt/src/src/peer.c:188:45: warning: unused parameter 'c' [-Wunused-parameter]
  int handle_packet_ctrl(server *srv, client *c, packet *p) {
                                              ^
 /mnt/src/src/peer.c: In function 'forward':
-/mnt/src/src/peer.c:31:1: warning: control reaches end of non-void function [-Wreturn-type]
+/mnt/src/src/peer.c:60:1: warning: control reaches end of non-void function [-Wreturn-type]
  }
  ^
 [ 53%] Building C object CMakeFiles/peer.dir/src/server.o
@@ -269,14 +285,21 @@ In file included from /mnt/src/include/uthash.h:31:0,
      printf("Value of length %d: %s\n", entry->value_len, entry->value);
                              ~^         ~~~~~~~~~~~~~~~~
                              %ld
+/mnt/src/include/scratch1.c: In function 'print_packet':
+/mnt/src/include/scratch1.c:49:21: warning: unknown conversion type character 'b' in format [-Wformat=]
+     printf("Flags: %b\n", packet->flags);
+                     ^
+/mnt/src/include/scratch1.c:49:12: warning: too many arguments for format [-Wformat-extra-args]
+     printf("Flags: %b\n", packet->flags);
+            ^~~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'client_test':
-/mnt/src/include/scratch1.c:122:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:148:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testkey1 = "testkey1";
                                ^~~~~~~~~~
-/mnt/src/include/scratch1.c:123:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:149:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testvalue1 = "testvalue1";
                                  ^~~~~~~~~~~~
-/mnt/src/include/scratch1.c:120:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:146:13: warning: unused variable 'htable_test1' [-Wunused-variable]
      htable* htable_test1 = NULL;
              ^~~~~~~~~~~~
 [100%] Linking C executable peer
