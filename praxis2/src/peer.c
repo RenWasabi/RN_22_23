@@ -118,6 +118,50 @@ int lookup_peer(uint16_t hash_id) {
  */
 int handle_own_request(server *srv, client *c, packet *p) {
     /* TODO IMPLEMENT */
+    // initialize ACK reply
+    packet* ack_packet = packet_new();
+
+    // determine request type and execute
+    uint16_t get_flag = p->flags | PKT_FLAG_GET;
+    printf("Mark1\n");
+    if (p->flags == get_flag) {// equal to itself with GET flag set
+        // GET request
+        printf("GET GET.\n");
+        ack_packet->flags = 0 | PKT_FLAG_GET | PKT_FLAG_ACK;
+        htable* entry = htable_get(ht, p->key, p->key_len);
+        if (entry != NULL){
+            printf("Found your entry to GET.\n");
+            ack_packet->key = malloc(entry->key_len);
+            strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
+            ack_packet->key_len = entry->key_len;
+            ack_packet->value = malloc(entry->value_len);
+            strncpy(ack_packet->value, entry->value, entry->value_len);
+            ack_packet->value_len = entry->value_len;
+        }
+    }
+    else if (p->flags == p->flags | PKT_FLAG_SET){
+        // SET request
+        printf("set set");
+        ack_packet->flags = 0 | PKT_FLAG_SET | PKT_FLAG_ACK;
+        htable_set(ht, p->key, p->key_len, p->value, p->value_len);
+    }
+    else if (p->flags == p->flags | PKT_FLAG_DEL){
+        // DEL request
+        ack_packet->flags = 0 | PKT_FLAG_DEL | PKT_FLAG_ACK;
+        // not yet implemented
+    }
+    else {
+        // invalid
+        printf("Ivalid request!\n"); // ?? HOW should we handle these?
+    }
+
+    // send the ACK packet to the client
+    // ??? IS the connection to the client already established or do we need to do that?
+    size_t packet_size; // will store the size of the packet returned by serialize
+    unsigned char* serialized_pack = packet_serialize(ack_packet, &packet_size);
+    if (sendall(c->socket, serialized_pack, packet_size) < 0){
+        printf("An error occurred while trying to send an ACK packet.\n");
+    }
     return CB_REMOVE_CLIENT;
 }
 
@@ -182,6 +226,8 @@ int handle_packet_data(server *srv, client *c, packet *p) {
     // Forward the packet to the correct peer
     if (peer_is_responsible(pred->node_id, self->node_id, hash_id)) {
         // We are responsible for this key
+        //me
+        printf(stderr, "We are responsible.\n");
         fprintf(stderr, "We are responsible.\n");
         return handle_own_request(srv, c, p);
     } else if (peer_is_responsible(self->node_id, succ->node_id, hash_id)) {
