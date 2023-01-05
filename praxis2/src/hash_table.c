@@ -23,6 +23,14 @@ void htable_set(htable **ht, const unsigned char *key, size_t key_len,
 
 htable *htable_get(htable **ht, const unsigned char *key, size_t key_len) {
     /* TODO IMPLEMENT */
+    htable* entry = NULL;
+    HASH_FIND(hh, *(ht), key, key_len, entry);
+    if (entry == NULL){
+        // no entry with this key exists in hash table
+        return NULL;
+    }
+    // entry exists
+    return entry;
 }
 
 int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {

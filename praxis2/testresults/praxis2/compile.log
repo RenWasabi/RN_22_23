@@ -102,17 +102,17 @@ In file included from /mnt/src/include/uthash.h:31:0,
      printf("Flags: %b\n", packet->flags);
             ^~~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'client_test':
-/mnt/src/include/scratch1.c:169:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:172:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testkey1 = "testkey1";
                                ^~~~~~~~~~
-/mnt/src/include/scratch1.c:170:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:173:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testvalue1 = "testvalue1";
                                  ^~~~~~~~~~~~
-/mnt/src/include/scratch1.c:167:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:170:13: warning: unused variable 'htable_test1' [-Wunused-variable]
      htable* htable_test1 = NULL;
              ^~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'peer_test':
-/mnt/src/include/scratch1.c:181:24: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/include/scratch1.c:184:24: warning: unused parameter 'ht' [-Wunused-parameter]
  int peer_test(htable** ht){
                         ^~
 [ 33%] Building C object CMakeFiles/client.dir/src/neighbour.o
@@ -180,32 +180,17 @@ In file included from /mnt/src/include/uthash.h:31:0,
 /mnt/src/src/hash_table.c:19:11: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
      entry = create_entry(key, value);
            ^
-/mnt/src/src/hash_table.c: In function 'htable_get':
-/mnt/src/src/hash_table.c:24:29: warning: unused parameter 'ht' [-Wunused-parameter]
- htable *htable_get(htable **ht, const unsigned char *key, size_t key_len) {
-                             ^~
-/mnt/src/src/hash_table.c:24:54: warning: unused parameter 'key' [-Wunused-parameter]
- htable *htable_get(htable **ht, const unsigned char *key, size_t key_len) {
-                                                      ^~~
-/mnt/src/src/hash_table.c:24:66: warning: unused parameter 'key_len' [-Wunused-parameter]
- htable *htable_get(htable **ht, const unsigned char *key, size_t key_len) {
-                                                                  ^~~~~~~
 /mnt/src/src/hash_table.c: In function 'htable_delete':
-/mnt/src/src/hash_table.c:28:28: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:36:28: warning: unused parameter 'ht' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                             ^~
-/mnt/src/src/hash_table.c:28:53: warning: unused parameter 'key' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:36:53: warning: unused parameter 'key' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                                                      ^~~
-/mnt/src/src/hash_table.c:28:65: warning: unused parameter 'key_len' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:36:65: warning: unused parameter 'key_len' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                                                                  ^~~~~~~
-/mnt/src/src/hash_table.c: In function 'htable_get':
-/mnt/src/src/hash_table.c:26:1: warning: control reaches end of non-void function [-Wreturn-type]
- }
- ^
-/mnt/src/src/hash_table.c: In function 'htable_delete':
-/mnt/src/src/hash_table.c:30:1: warning: control reaches end of non-void function [-Wreturn-type]
+/mnt/src/src/hash_table.c:38:1: warning: control reaches end of non-void function [-Wreturn-type]
  }
  ^
 [ 80%] Building C object CMakeFiles/peer.dir/src/neighbour.o
@@ -283,17 +268,17 @@ In file included from /mnt/src/include/uthash.h:31:0,
      printf("Flags: %b\n", packet->flags);
             ^~~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'client_test':
-/mnt/src/include/scratch1.c:169:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:172:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testkey1 = "testkey1";
                                ^~~~~~~~~~
-/mnt/src/include/scratch1.c:170:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:173:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testvalue1 = "testvalue1";
                                  ^~~~~~~~~~~~
-/mnt/src/include/scratch1.c:167:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:170:13: warning: unused variable 'htable_test1' [-Wunused-variable]
      htable* htable_test1 = NULL;
              ^~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'peer_test':
-/mnt/src/include/scratch1.c:181:24: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/include/scratch1.c:184:24: warning: unused parameter 'ht' [-Wunused-parameter]
  int peer_test(htable** ht){
                         ^~
 [100%] Linking C executable peer

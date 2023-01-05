@@ -79,14 +79,17 @@ void test_htable_set(htable** ht){
 // needs to be run inside of peer process
 // normally run this test crashes, in valgrind it runs with desired result
 /*
-void test_htable_set(htable** ht){
+void test_htable_set_get(htable** ht){
     unsigned char* testkey1 = "testkey1";
     unsigned char* testvalue1 = "testvalue1";
     htable_set(ht, testkey1, strlen(testkey1), testvalue1, strlen(testvalue1));
-    printf("%s\n", ht[0]->value); // this produces invalid read of size 1 -> segfault
+    htable* entry = htable_get(ht,testkey1, strlen(testkey1));
+    print_table_entry(entry);
+    //printf("%s\n", ht[0]->value); // this produces invalid read of size 1 -> segfault
     return;
 }
  */
+
 
 
 
@@ -181,7 +184,7 @@ int client_test(){
 int peer_test(htable** ht){
     printf("Test Peer.\n");
     printf("---------------------------------------------------------\n");
-    //test_htable_set(ht);
+    //test_htable_set_get(ht);
 
 
 
