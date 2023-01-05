@@ -16,13 +16,11 @@ int main(){
 
 // HELPER FUNCTIONS
 
-htable* create_entry(unsigned char* key, unsigned char* value){
+htable* create_entry(unsigned char* key, size_t key_len, unsigned char* value, size_t value_len){
     /* allocate space and initialize values (not hh)
      * NOTE: use strlen do reserve place for string and determine string size
      * using sizeof seems to always just return the size of the pointer
      * to the string (? 8 byte?) */
-    int key_len = strlen(key);
-    int value_len = strlen(value);
     htable* entry;
     entry = malloc(sizeof(*entry));
     entry->key = malloc(key_len);
@@ -171,8 +169,10 @@ int client_test(){
 
     unsigned char* testkey1 = "testkey1";
     unsigned char* testvalue1 = "testvalue1";
+    size_t key_len = strlen(testkey1);
+    size_t value_len = strlen(value_len);
 
-    htable* test1_entry1 = create_entry(testkey1, testvalue1);
+    htable* test1_entry1 = create_entry(testkey1, key_len, testvalue1, value_len);
     print_table_entry(test1_entry1);
 
 

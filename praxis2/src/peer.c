@@ -124,6 +124,8 @@ int handle_own_request(server *srv, client *c, packet *p) {
     // determine request type and execute
     uint16_t get_flag = p->flags | PKT_FLAG_GET;
     printf("Mark1\n");
+    printf("Size of char: %d\n", sizeof(char));
+    printf("Size of unsigned char: %d\n", sizeof(unsigned char));
     if (p->flags == get_flag) {// equal to itself with GET flag set
         // GET request
         printf("GET GET.\n");

@@ -16,7 +16,7 @@ void htable_set(htable **ht, const unsigned char *key, size_t key_len,
         return;
     }
     // entry doesn't exist -> create a new entry
-    entry = create_entry(key, value);
+    entry = create_entry(key, key_len, value, value_len);
     // add it to the hash
     HASH_ADD_KEYPTR(hh, *(ht), key, key_len, entry);
 }
