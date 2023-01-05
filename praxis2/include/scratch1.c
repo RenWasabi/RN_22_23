@@ -23,15 +23,16 @@ htable* create_entry(unsigned char* key, uint16_t key_len, unsigned char* value,
     htable* entry;
     entry = malloc(sizeof(*entry));
     entry->key = malloc(key_len);
-    strncpy(entry->key, key, key_len);
+    memcpy(entry->key, key, key_len);
     entry->key_len = key_len;
     entry->value = malloc(value_len);
-    strncpy(entry->value, value, value_len);
+    memcpy(entry->value, value, value_len);
     entry->value_len = value_len;
     return entry;
 }
 
 void print_table_entry(htable* entry){
+
     printf("Table Entry:\n");
     printf("Key of length %d: %s\n", entry->key_len, entry->key);
     printf("Value of length %d: %s\n", entry->value_len, entry->value);

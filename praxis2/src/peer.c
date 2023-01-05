@@ -120,19 +120,9 @@ int handle_own_request(server *srv, client *c, packet *p) {
     /* TODO IMPLEMENT */
     // initialize ACK reply
     packet* ack_packet = packet_new();
-
     // determine request type and execute
-    printf("p->flags 1: %b\n", p->flags);
     uint8_t get_flag = p->flags | PKT_FLAG_GET;
-    printf("p->flags 1: %b\n", p->flags);
     uint8_t set_flag = p->flags | PKT_FLAG_SET;
-    printf("Mark1\n");
-    printf("p->flags: %b\n", p->flags);
-    printf("get-flag: %b\n", get_flag);
-    printf("set-flag: %b\n", set_flag);
-    printf("GET: %d\n", (p->flags & 1 << PKT_FLAG_GET_POS));
-    printf("SET: %d\n", (p->flags & 1 << PKT_FLAG_SET_POS));
-    printf("DEL: %d\n", (p->flags & 1 << PKT_FLAG_DEL_POS));
     if (p->flags == get_flag) {// equal to itself with GET flag set
         // GET request
         printf("GET GET.\n");
@@ -146,6 +136,9 @@ int handle_own_request(server *srv, client *c, packet *p) {
             ack_packet->value = malloc(entry->value_len);
             strncpy(ack_packet->value, entry->value, entry->value_len);
             ack_packet->value_len = entry->value_len;
+        }
+        else {
+            printf("No entry?\n");
         }
     }
     else if (p->flags == set_flag){
