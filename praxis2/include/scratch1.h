@@ -24,6 +24,8 @@ void print_table_entry(htable* entry);
 
 void print_packet(packet* packet);
 
+// HERE
+void test_htable_set(htable** ht);
 
 // "MAIN"
 /* since client is an executable file I just link

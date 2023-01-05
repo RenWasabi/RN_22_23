@@ -69,6 +69,25 @@ void print_packet(packet* packet){
 
 }
 
+/*
+void test_htable_set(htable** ht){
+    ht = NULL;
+    return;
+}
+ */
+
+// needs to be run inside of peer process
+void test_htable_set(htable** ht){
+    unsigned char* testkey1 = "testkey1";
+    unsigned char* testvalue1 = "testvalue1";
+    htable_set(ht, testkey1, strlen(testkey1), testvalue1, strlen(testvalue1));
+    printf("%s\n", ht[0]->value);
+    return;
+
+}
+
+
+
 int test_peer_is_responsible(uint16_t pred_id, uint16_t peer_id, uint16_t hash_id, int desired_output){
     if (peer_is_responsible(pred_id, peer_id, hash_id) == desired_output){
         return 1;
@@ -157,9 +176,10 @@ int client_test(){
 }
 
 // for testing functions in a peer process
-int peer_test(){
+int peer_test(htable** ht){
     printf("Test Peer.\n");
     printf("---------------------------------------------------------\n");
+    //test_htable_set(ht);
 
 
 
