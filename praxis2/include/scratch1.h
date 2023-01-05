@@ -17,7 +17,7 @@
 
 /* takes a char key and value and returns a pointer to an
  * htable entry created from these */
-htable* create_entry(unsigned char* key, unsigned char* value);
+htable* create_entry(unsigned char* key, uint16_t key_len, unsigned char* value, uint32_t value_len);
 
 // print a table entry
 void print_table_entry(htable* entry);

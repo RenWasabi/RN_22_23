@@ -118,6 +118,59 @@ int lookup_peer(uint16_t hash_id) {
  */
 int handle_own_request(server *srv, client *c, packet *p) {
     /* TODO IMPLEMENT */
+    // initialize ACK reply
+    packet* ack_packet = packet_new();
+
+    // determine request type and execute
+    printf("p->flags 1: %b\n", p->flags);
+    uint8_t get_flag = p->flags | PKT_FLAG_GET;
+    printf("p->flags 1: %b\n", p->flags);
+    uint8_t set_flag = p->flags | PKT_FLAG_SET;
+    printf("Mark1\n");
+    printf("p->flags: %b\n", p->flags);
+    printf("get-flag: %b\n", get_flag);
+    printf("set-flag: %b\n", set_flag);
+    printf("GET: %d\n", (p->flags & 1 << PKT_FLAG_GET_POS));
+    printf("SET: %d\n", (p->flags & 1 << PKT_FLAG_SET_POS));
+    printf("DEL: %d\n", (p->flags & 1 << PKT_FLAG_DEL_POS));
+    if (p->flags == get_flag) {// equal to itself with GET flag set
+        // GET request
+        printf("GET GET.\n");
+        ack_packet->flags = 0 | PKT_FLAG_GET | PKT_FLAG_ACK;
+        htable* entry = htable_get(ht, p->key, p->key_len);
+        if (entry != NULL){
+            printf("Found your entry to GET.\n");
+            ack_packet->key = malloc(entry->key_len);
+            strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
+            ack_packet->key_len = entry->key_len;
+            ack_packet->value = malloc(entry->value_len);
+            strncpy(ack_packet->value, entry->value, entry->value_len);
+            ack_packet->value_len = entry->value_len;
+        }
+    }
+    else if (p->flags == set_flag){
+            // SET request
+            printf("set set\n");
+            ack_packet->flags = 0 | PKT_FLAG_SET | PKT_FLAG_ACK;
+            htable_set(ht, p->key, p->key_len, p->value, p->value_len);
+        }
+    else if (p->flags == p->flags | PKT_FLAG_DEL){
+        // DEL request
+        ack_packet->flags = 0 | PKT_FLAG_DEL | PKT_FLAG_ACK;
+        // not yet implemented
+    } else {
+        // invalid
+        printf("Ivalid request!\n"); // ?? HOW should we handle these?
+    }
+
+    printf("The hell?\n");
+    // send the ACK packet to the client
+    // ??? IS the connection to the client already established or do we need to do that?
+    size_t packet_size; // will store the size of the packet returned by serialize
+    unsigned char* serialized_pack = packet_serialize(ack_packet, &packet_size);
+    if (sendall(c->socket, serialized_pack, packet_size) < 0){
+        printf("An error occurred while trying to send an ACK packet.\n");
+    }
     return CB_REMOVE_CLIENT;
 }
 
@@ -320,7 +373,7 @@ int main(int argc, char **argv) {
     // added by me for testing BEGIN
     //test_peer_inside();
 
-    peer_test(ht);
+    //peer_test(ht);
     // TEST END
     server_run(srv);
     close(srv->socket);

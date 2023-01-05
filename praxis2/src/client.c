@@ -115,7 +115,7 @@ int connect_socket(char *hostname, char *port) {
  */
 int main(int argc, char **argv) {
     // for testing START
-    client_test();
+    //client_test();
     // for testing END
 
     if (argc < 5) {
@@ -185,6 +185,11 @@ int main(int argc, char **argv) {
 
     size_t response_len;
     unsigned char *response = recvall(s, &response_len);
+    // ME: apparently sometimes this buffer is too short?
+    printf("Received: %s\n", response);
+    printf("strlen of it: %d\n", strlen(response));
+    printf("response_len: %d\n", response_len);
+    printf("sizeof it; %d\n", sizeof(response));
     packet *rsp = packet_decode(response, response_len);
     free(response);
 
