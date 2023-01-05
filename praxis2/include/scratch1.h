@@ -17,12 +17,18 @@
 
 /* takes a char key and value and returns a pointer to an
  * htable entry created from these */
-htable* create_entry(unsigned char* key, unsigned char* value);
+//htable* create_entry(unsigned char* key, unsigned char* value);
 
 // print a table entry
-void print_table_entry(htable* entry);
+//void print_table_entry(htable* entry);
 
 void print_packet(packet* packet);
+
+int test_peer_is_responsible(uint16_t pred_id, uint16_t peer_id, uint16_t hash_id, int desired_output);
+
+int all_tests_peer_is_responsible();
+
+//void test_htable_set(htable** ht);
 
 
 // "MAIN"

@@ -3,13 +3,13 @@ project (RN-Praxis2)
 set (CMAKE_C_STANDARD 11)
 
 # Client
-add_executable(client src/client.c src/packet.c src/util.c include/scratch1.c include src/neighbour.c)
+add_executable(client src/client.c src/packet.c src/util.c include/scratch1.c include/scratch1.h include src/neighbour.c include/hash_table.h)
 target_include_directories(client PRIVATE include)
 set_target_properties(client PROPERTIES OUTPUT_NAME "client")
 target_compile_options (client PRIVATE -Wall -Wextra -Wpedantic)
 
 # Peer
-add_executable(peer src/peer.c src/server.c src/packet.c src/util.c src/hash_table.c src/neighbour.c include/neighbour.h include/requests.h src/requests.c include/scratch1.c)
+add_executable(peer src/peer.c src/server.c src/packet.c src/util.c src/hash_table.c src/neighbour.c include/neighbour.h include/requests.h src/requests.c include/scratch1.c include/scratch1.h include/hash_table.h)
 target_include_directories(peer PRIVATE include)
 set_target_properties(peer PROPERTIES OUTPUT_NAME "peer")
 target_compile_options (peer PRIVATE -Wall -Wextra -Wpedantic)

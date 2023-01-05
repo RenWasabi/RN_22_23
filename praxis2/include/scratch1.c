@@ -15,12 +15,13 @@ int main(){
 */
 
 // HELPER FUNCTIONS
-
+/*
 htable* create_entry(unsigned char* key, unsigned char* value){
     /* allocate space and initialize values (not hh)
      * NOTE: use strlen do reserve place for string and determine string size
      * using sizeof seems to always just return the size of the pointer
      * to the string (? 8 byte?) */
+/*
     int key_len = strlen(key);
     int value_len = strlen(value);
     htable* entry;
@@ -33,7 +34,9 @@ htable* create_entry(unsigned char* key, unsigned char* value){
     entry->value_len = value_len;
     return entry;
 }
+*/
 
+/*
 void print_table_entry(htable* entry){
     printf("Table Entry:\n");
     printf("Key of length %d: %s\n", entry->key_len, entry->key);
@@ -42,6 +45,7 @@ void print_table_entry(htable* entry){
     HASH_VALUE(entry->key, entry->key_len, hashv);
     printf("Hash value: %d\n", hashv);
 }
+ */
 
 void print_packet(packet* packet){
     printf("---------------------------------------------------------\n");
@@ -128,6 +132,21 @@ int all_tests_peer_is_responsible(){
     return all_ok;
 }
 
+
+// needs to be run inside of peer process
+void test_htable_set(htable** ht){
+    unsigned char* testkey1 = "testkey1";
+    unsigned char* testvalue1 = "testvalue1";
+    htable_set(ht, testkey1, strlen(testkey1), testvalue1, strlen(testvalue1));
+    printf("%s\n", ht[0]->value);
+    return;
+
+}
+
+
+
+
+
 int client_test(){
     // unit tests
     printf("---------------------------------------------------------\n");
@@ -157,9 +176,10 @@ int client_test(){
 }
 
 // for testing functions in a peer process
-int peer_test(){
+int peer_test(peer* peer, htable** ht){
     printf("Test Peer.\n");
     printf("---------------------------------------------------------\n");
+    test_htable_set(ht);
 
 
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "uthash.h"
+#include "scratch1.h" // for helper functions
 
 /*
  * This is the structure that will be used to store (the data in) the hash
@@ -14,6 +15,20 @@ typedef struct htable {
     size_t value_len;
     UT_hash_handle hh; // impementation specific
 } htable;
+
+
+// HELPER FUNCTIONS
+
+/* takes a char key and value and returns a pointer to an
+ * htable entry created from these */
+htable* create_entry(unsigned char* key, unsigned char* value);
+
+// print a table entry
+void print_table_entry(htable* entry);
+
+// END HELPER
+
+
 
 /**
  * @brief Implementation of the SET operation on our hash table.

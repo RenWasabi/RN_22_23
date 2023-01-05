@@ -320,7 +320,7 @@ int main(int argc, char **argv) {
     // added by me for testing BEGIN
     //test_peer_inside();
 
-    // peer_test();
+    peer_test(self, ht);
     // TEST END
     server_run(srv);
     close(srv->socket);
