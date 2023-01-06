@@ -1,9 +1,9 @@
 .
 ----------------------------------------------------------------------
-Ran 1 test in 2.360s
+Ran 1 test in 2.364s
 
 OK
-.FFFFFFFFF.
+.FFFFFFFF..
 ======================================================================
 FAIL: test_get_full_circle (rnvs_tb.blocks.block5.PeerTestCase)
 Tests a full sequence for client GET request that needs to be fetched from another node.
@@ -11,9 +11,9 @@ Tests a full sequence for client GET request that needs to be fetched from anoth
 Traceback (most recent call last):
   File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/common.py", line 36, in log_wrapper
     return fun(*args, **kwargs)
-  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/blocks/block5.py", line 343, in test_get_full_circle
-    self.assertEqual(lookup.hash_id, hash, msg='Peer requested lookup for wrong hash id!')
-AssertionError: 26708 != 21608 : Peer requested lookup for wrong hash id!
+  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/blocks/block5.py", line 352, in test_get_full_circle
+    self.fail(f"Responsible peer did not receive a get request within timeout! Stdout: {out}, Stderr:{err}")
+AssertionError: Responsible peer did not receive a get request within timeout! Stdout: bytearray(b''), Stderr:bytearray(b'Starting server. Press any key to exit.\nDecoded packet header: \n\tACK: 0\n\tGET: 1\n\tSET: 0\n\tDEL: 0\n\tKey Length: 23 Bytes\n\tValue Length: 0 Bytes\nHash id: 21608\nNo idea! Just looking it up!.\nDecoded control packet header: \n\tJOIN: 0\n\tNOTIFY: 0\n\tSTABILIZE: 0\n\tLOOKUP: 0\n\tREPLY: 1\nHandling control packet...\n')
 
 ======================================================================
 FAIL: test_student_ring_long_fixed_buffer (rnvs_tb.blocks.block5.PeerTestCase)
@@ -183,18 +183,7 @@ Traceback (most recent call last):
     raise AssertionError('Did not receive expected packet due to previous errors!') from value
 AssertionError: Did not receive expected packet due to previous errors!
 
-======================================================================
-FAIL: test_trigger_get_minimal (rnvs_tb.blocks.block5.PeerTestCase)
-Test whether a Client GET request triggers a proxy-GET request to the successor.
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/common.py", line 36, in log_wrapper
-    return fun(*args, **kwargs)
-  File "/usr/local/lib/python3.10/dist-packages/rnvs_tb/blocks/block5.py", line 230, in test_trigger_get_minimal
-    self.fail(f"Did not receive a GET request within timeout! Stdout: {out}, Stderr:{err}")
-AssertionError: Did not receive a GET request within timeout! Stdout: bytearray(b''), Stderr:bytearray(b"Starting server. Press any key to exit.\nDecoded packet header: \n\tACK: 0\n\tGET: 1\n\tSET: 0\n\tDEL: 0\n\tKey Length: 12 Bytes\n\tValue Length: 0 Bytes\nHash id: 18281\nSuccessor\'s business.\n")
+Ran 11 tests in 54.827s
 
-----------------------------------------------------------------------
-Ran 11 tests in 48.799s
-
-FAILED (failures=9)
+FAILED (failures=8)

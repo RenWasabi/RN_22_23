@@ -50,11 +50,12 @@ int forward(peer *p, packet *pack) {
     // int sendall(int s, unsigned char *buffer, size_t buf_size)
     // s apparantly needs to be the socket of the successor to work
     if (sendall(succ->socket, serialized_pack, packet_size) < 0){
-        printf("An error occurred while trying to send a lookup packet.\n");
+        printf("An error occurred while trying to send forward a packet.\n");
         return -1;
     }
     peer_disconnect(succ);
-    printf("Lookup package was sent successfully.\n");
+    printf("Disconnected.\n");
+    //printf("Lookup package was sent successfully.\n");
     return 0;
 
 }
@@ -70,6 +71,15 @@ int forward(peer *p, packet *pack) {
  */
 int proxy_request(server *srv, int csocket, packet *p, peer *n) {
     /* TODO IMPLEMENT */
+    forward(n, p);
+    peer_connect(n);
+    char* answer_serial;
+    size_t answer_len;
+    printf("I, node %d now make a proxy request to node %d\n", self->node_id, n->node_id);
+    answer_serial = recvall(n->socket, &answer_len);
+    sendall(csocket, answer_serial, answer_len);
+    //packet* answer_pkt = packet_decode(answer_serial, answer_len);
+    //print_packet(answer_pkt);
     return CB_REMOVE_CLIENT;
 }
 
@@ -84,10 +94,20 @@ int lookup_peer(uint16_t hash_id) {
     // create a lookup control packet
     packet* lkup_packet = packet_new(); // initialize packet
     lkup_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_LKUP; // reserved bits set to 0 // htons????
-    lkup_packet->hash_id = htons(hash_id);
-    lkup_packet->node_id = htons(self->node_id);
-    lkup_packet->node_ip = htonl(peer_get_ip(self)); // !! NOT SURE IF THIS GETS THE CORRECT IP
-    lkup_packet->node_port = htons(self->port);
+
+    // with NBO
+    //lkup_packet->hash_id = htons(hash_id);
+    //lkup_packet->node_id = htons(self->node_id);
+    //lkup_packet->node_ip = htonl(peer_get_ip(self)); // !! NOT SURE IF THIS GETS THE CORRECT IP
+    //lkup_packet->node_port = htons(self->port);
+
+    // without NBO
+
+    lkup_packet->hash_id = hash_id;
+    lkup_packet->node_id = self->node_id;
+    lkup_packet->node_ip = peer_get_ip(self);
+    lkup_packet->node_port = self->port;
+
 
     // TEST BEGIN
     printf("Lookup packet: \n");
