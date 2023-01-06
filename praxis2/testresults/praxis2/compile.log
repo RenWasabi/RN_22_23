@@ -155,16 +155,16 @@ In file included from /mnt/src/src/peer.c:2:0:
 [ 66%] Building C object CMakeFiles/peer.dir/src/util.o
 [ 73%] Building C object CMakeFiles/peer.dir/src/hash_table.o
 /mnt/src/src/hash_table.c: In function 'htable_delete':
-/mnt/src/src/hash_table.c:64:28: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:66:28: warning: unused parameter 'ht' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                             ^~
-/mnt/src/src/hash_table.c:64:53: warning: unused parameter 'key' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:66:53: warning: unused parameter 'key' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                                                      ^~~
-/mnt/src/src/hash_table.c:64:65: warning: unused parameter 'key_len' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:66:65: warning: unused parameter 'key_len' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                                                                  ^~~~~~~
-/mnt/src/src/hash_table.c:66:1: warning: control reaches end of non-void function [-Wreturn-type]
+/mnt/src/src/hash_table.c:68:1: warning: control reaches end of non-void function [-Wreturn-type]
  }
  ^
 [ 80%] Building C object CMakeFiles/peer.dir/src/neighbour.o

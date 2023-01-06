@@ -29,12 +29,14 @@ void htable_set(htable **ht, const unsigned char *key, size_t key_len,
     // entry exists -> overwrite the value
     if (entry != NULL){
         printf("Existing entry for this key.\n");
+        HASH_DEL(*(ht), entry);
         free(entry->value);
-        entry->value = malloc(key_len*sizeof(unsigned char));
-        memcpy(entry->value, value, value_len);
-        return;
+        free(entry->key);
+        free(entry);
     }
-    printf("No existing entry\n");
+    else {
+        printf("No existing entry\n");
+    }
     // entry doesn't exist -> create a new entry
     //entry = create_entry2(key, key_len, value, value_len);
     entry = malloc(sizeof(htable));
