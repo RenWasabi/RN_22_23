@@ -1,6 +1,6 @@
 .
 ----------------------------------------------------------------------
-Ran 1 test in 2.364s
+Ran 1 test in 2.406s
 
 OK
 .FFFFFFFF..
@@ -184,6 +184,6 @@ Traceback (most recent call last):
 AssertionError: Did not receive expected packet due to previous errors!
 
 ----------------------------------------------------------------------
-Ran 11 tests in 54.827s
+Ran 11 tests in 51.220s
 
 FAILED (failures=8)

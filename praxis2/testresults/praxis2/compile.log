@@ -81,10 +81,22 @@ Scanning dependencies of target peer
  int forward(peer *p, packet *pack) {
                    ^
 /mnt/src/src/peer.c: In function 'proxy_request':
-/mnt/src/src/peer.c:79:19: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:86:19: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
      answer_serial = recvall(n->socket, &answer_len);
                    ^
-/mnt/src/src/peer.c:80:22: warning: pointer targets in passing argument 2 of 'sendall' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:88:40: warning: pointer targets in passing argument 1 of 'packet_decode' differ in signedness [-Wpointer-sign]
+     packet* answer_pkt = packet_decode(answer_serial, answer_len);
+                                        ^~~~~~~~~~~~~
+In file included from /mnt/src/include/neighbour.h:3:0,
+                 from /mnt/src/src/peer.c:6:
+/mnt/src/include/packet.h:61:9: note: expected 'const unsigned char *' but argument is of type 'char *'
+ packet *packet_decode(const unsigned char *buffer, size_t buf_len);
+         ^~~~~~~~~~~~~
+/mnt/src/src/peer.c:90:26: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+     printf("Answer len: %d\n", answer_len);
+                         ~^
+                         %ld
+/mnt/src/src/peer.c:91:22: warning: pointer targets in passing argument 2 of 'sendall' differ in signedness [-Wpointer-sign]
      sendall(csocket, answer_serial, answer_len);
                       ^~~~~~~~~~~~~
 In file included from /mnt/src/include/server.h:7:0,
@@ -93,49 +105,52 @@ In file included from /mnt/src/include/server.h:7:0,
 /mnt/src/include/util.h:26:5: note: expected 'unsigned char *' but argument is of type 'char *'
  int sendall(int s, unsigned char *buffer, size_t buf_size);
      ^~~~~~~
-/mnt/src/src/peer.c:72:27: warning: unused parameter 'srv' [-Wunused-parameter]
+/mnt/src/src/peer.c:79:27: warning: unused parameter 'srv' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                            ^~~
 /mnt/src/src/peer.c: In function 'handle_own_request':
-/mnt/src/src/peer.c:153:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:165:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
              strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
                      ^~~~~~~~~~
 In file included from /mnt/src/src/peer.c:2:0:
 /usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  extern char *strncpy (char *__restrict __dest,
               ^~~~~~~
-/mnt/src/src/peer.c:153:38: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:165:38: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
              strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
                                       ^~~~~
 In file included from /mnt/src/src/peer.c:2:0:
 /usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
  extern char *strncpy (char *__restrict __dest,
               ^~~~~~~
-/mnt/src/src/peer.c:156:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:168:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
              strncpy(ack_packet->value, entry->value, entry->value_len);
                      ^~~~~~~~~~
 In file included from /mnt/src/src/peer.c:2:0:
 /usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  extern char *strncpy (char *__restrict __dest,
               ^~~~~~~
-/mnt/src/src/peer.c:156:40: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:168:40: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
              strncpy(ack_packet->value, entry->value, entry->value_len);
                                         ^~~~~
 In file included from /mnt/src/src/peer.c:2:0:
 /usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
  extern char *strncpy (char *__restrict __dest,
               ^~~~~~~
-/mnt/src/src/peer.c:170:23: warning: self-comparison always evaluates to true [-Wtautological-compare]
+/mnt/src/src/peer.c:185:23: warning: self-comparison always evaluates to true [-Wtautological-compare]
      else if (p->flags == p->flags | PKT_FLAG_DEL){
                        ^~
-/mnt/src/src/peer.c:170:23: warning: suggest parentheses around comparison in operand of '|' [-Wparentheses]
+/mnt/src/src/peer.c:185:23: warning: suggest parentheses around comparison in operand of '|' [-Wparentheses]
      else if (p->flags == p->flags | PKT_FLAG_DEL){
               ~~~~~~~~~^~~~~~~~~~~
-/mnt/src/src/peer.c:139:32: warning: unused parameter 'srv' [-Wunused-parameter]
+/mnt/src/src/peer.c:197:12: warning: too many arguments for format [-Wformat-extra-args]
+     printf("Sending ACK packet to socket c->socket.\n", c->socket);
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/src/src/peer.c:150:32: warning: unused parameter 'srv' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                 ^~~
 /mnt/src/src/peer.c: In function 'handle_packet_ctrl':
-/mnt/src/src/peer.c:274:45: warning: unused parameter 'c' [-Wunused-parameter]
+/mnt/src/src/peer.c:295:45: warning: unused parameter 'c' [-Wunused-parameter]
  int handle_packet_ctrl(server *srv, client *c, packet *p) {
                                              ^
 [ 53%] Building C object CMakeFiles/peer.dir/src/server.o
@@ -143,16 +158,16 @@ In file included from /mnt/src/src/peer.c:2:0:
 [ 66%] Building C object CMakeFiles/peer.dir/src/util.o
 [ 73%] Building C object CMakeFiles/peer.dir/src/hash_table.o
 /mnt/src/src/hash_table.c: In function 'htable_delete':
-/mnt/src/src/hash_table.c:66:28: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:67:28: warning: unused parameter 'ht' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                             ^~
-/mnt/src/src/hash_table.c:66:53: warning: unused parameter 'key' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:67:53: warning: unused parameter 'key' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                                                      ^~~
-/mnt/src/src/hash_table.c:66:65: warning: unused parameter 'key_len' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:67:65: warning: unused parameter 'key_len' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                                                                  ^~~~~~~
-/mnt/src/src/hash_table.c:68:1: warning: control reaches end of non-void function [-Wreturn-type]
+/mnt/src/src/hash_table.c:69:1: warning: control reaches end of non-void function [-Wreturn-type]
  }
  ^
 [ 80%] Building C object CMakeFiles/peer.dir/src/neighbour.o

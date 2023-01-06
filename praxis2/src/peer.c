@@ -53,8 +53,15 @@ int forward(peer *p, packet *pack) {
         printf("An error occurred while trying to send forward a packet.\n");
         return -1;
     }
-    peer_disconnect(succ);
-    printf("Disconnected.\n");
+
+    //uint8_t ack_flag = pack->flags | PKT_FLAG_LKUP;
+    /* in case of proxy request, connection needs to remain open for reply */
+    uint8_t ctlr_flag = pack->flags | PKT_FLAG_CTRL;
+    if (pack->flags == ctlr_flag){
+        peer_disconnect(succ);
+        printf("Disconnected.\n");
+    }
+
     //printf("Lookup package was sent successfully.\n");
     return 0;
 
@@ -72,15 +79,19 @@ int forward(peer *p, packet *pack) {
 int proxy_request(server *srv, int csocket, packet *p, peer *n) {
     /* TODO IMPLEMENT */
     forward(n, p);
-    peer_connect(n);
+    //peer_connect(n);
     char* answer_serial;
     size_t answer_len;
     printf("I, node %d now make a proxy request to node %d\n", self->node_id, n->node_id);
     answer_serial = recvall(n->socket, &answer_len);
+    printf("We're getting there...\n");
+    packet* answer_pkt = packet_decode(answer_serial, answer_len);
+    print_packet(answer_pkt);
+    printf("Answer len: %d\n", answer_len);
     sendall(csocket, answer_serial, answer_len);
-    //packet* answer_pkt = packet_decode(answer_serial, answer_len);
-    //print_packet(answer_pkt);
-    return CB_REMOVE_CLIENT;
+    peer_disconnect(n);
+    return CB_REMOVE_CLIENT; // the default
+    //return CB_OK;
 }
 
 /**
@@ -146,15 +157,16 @@ int handle_own_request(server *srv, client *c, packet *p) {
     if (p->flags == get_flag) {// equal to itself with GET flag set
         // GET request
         ack_packet->flags = 0 | PKT_FLAG_GET | PKT_FLAG_ACK;
+        //ack_packet->flags = htons(ack_packet->flags);
         htable* entry = htable_get(ht, p->key, p->key_len);
         if (entry != NULL){
             printf("Found your entry to GET.\n");
             ack_packet->key = malloc(entry->key_len);
             strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
-            ack_packet->key_len = entry->key_len;
+            ack_packet->key_len = htons(entry->key_len);
             ack_packet->value = malloc(entry->value_len);
             strncpy(ack_packet->value, entry->value, entry->value_len);
-            ack_packet->value_len = entry->value_len;
+            ack_packet->value_len = htons(entry->value_len);
         }
         else {
             printf("No entry to GET?\n");
@@ -166,6 +178,9 @@ int handle_own_request(server *srv, client *c, packet *p) {
             htable_set(ht, p->key, p->key_len, p->value, p->value_len);
             htable* test_entry;
             HASH_FIND(hh, *(ht), p->key, p->key_len, test_entry);
+            if (test_entry != NULL){
+                fprintf(stderr, "Performed the requested SET operation.\n");
+            }
         }
     else if (p->flags == p->flags | PKT_FLAG_DEL){
         // DEL request
@@ -177,13 +192,19 @@ int handle_own_request(server *srv, client *c, packet *p) {
     }
 
     // send the ACK packet to the client
+    printf("The ACK packet:\n");
+    print_packet(ack_packet);
+    printf("Sending ACK packet to socket c->socket.\n", c->socket);
     // ??? IS the connection to the client already established or do we need to do that?
     size_t packet_size; // will store the size of the packet returned by serialize
     unsigned char* serialized_pack = packet_serialize(ack_packet, &packet_size);
+    printf("About to send....\n");
     if (sendall(c->socket, serialized_pack, packet_size) < 0){
         printf("An error occurred while trying to send an ACK packet.\n");
     }
-    return CB_REMOVE_CLIENT;
+    printf("ACK packet sent.\n");
+    return CB_REMOVE_CLIENT; // the default
+    //return CB_OK;
 }
 
 /**
@@ -247,7 +268,7 @@ int handle_packet_data(server *srv, client *c, packet *p) {
     // Forward the packet to the correct peer
     if (peer_is_responsible(pred->node_id, self->node_id, hash_id)) {
         // We are responsible for this key
-        fprintf(stderr, "We are responsible.\n");
+        fprintf(stderr, "We are responsible and this is compiled.\n");
         return handle_own_request(srv, c, p);
     } else if (peer_is_responsible(self->node_id, succ->node_id, hash_id)) {
         // Our successor is responsible for this key

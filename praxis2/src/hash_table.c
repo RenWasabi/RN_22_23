@@ -48,6 +48,7 @@ void htable_set(htable **ht, const unsigned char *key, size_t key_len,
     entry->value_len = value_len;
     // add it to the hash
     HASH_ADD_KEYPTR(hh, *(ht), entry->key, entry->key_len, entry);
+    printf("finished SETting the enty?\n");
     return;
 }
 
