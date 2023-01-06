@@ -27,92 +27,63 @@ This warning is for project developers.  Use -Wno-dev to suppress it.
 -- Build files have been written to: /mnt/src/build
 Scanning dependencies of target client
 [  6%] Building C object CMakeFiles/client.dir/src/client.o
+/mnt/src/src/client.c: In function 'main':
+/mnt/src/src/client.c:190:41: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
+     printf("strlen of it: %d\n", strlen(response));
+                                         ^~~~~~~~
+In file included from /mnt/src/src/client.c:8:0:
+/usr/include/string.h:384:15: note: expected 'const char *' but argument is of type 'unsigned char *'
+ extern size_t strlen (const char *__s)
+               ^~~~~~
+/mnt/src/src/client.c:190:28: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+     printf("strlen of it: %d\n", strlen(response));
+                           ~^     ~~~~~~~~~~~~~~~~
+                           %ld
+/mnt/src/src/client.c:191:28: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+     printf("response_len: %d\n", response_len);
+                           ~^
+                           %ld
+/mnt/src/src/client.c:192:25: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long unsigned int' [-Wformat=]
+     printf("sizeof it; %d\n", sizeof(response));
+                        ~^
+                        %ld
 [ 13%] Building C object CMakeFiles/client.dir/src/packet.o
 [ 20%] Building C object CMakeFiles/client.dir/src/util.o
 [ 26%] Building C object CMakeFiles/client.dir/include/scratch1.o
-/mnt/src/include/scratch1.c: In function 'create_entry':
-/mnt/src/include/scratch1.c:24:26: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
-     int key_len = strlen(key);
-                          ^~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:384:15: note: expected 'const char *' but argument is of type 'unsigned char *'
- extern size_t strlen (const char *__s)
-               ^~~~~~
-/mnt/src/include/scratch1.c:25:28: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
-     int value_len = strlen(value);
-                            ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:384:15: note: expected 'const char *' but argument is of type 'unsigned char *'
- extern size_t strlen (const char *__s)
-               ^~~~~~
-/mnt/src/include/scratch1.c:29:13: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
-     strncpy(entry->key, key, key_len);
-             ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
-/mnt/src/include/scratch1.c:29:25: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
-     strncpy(entry->key, key, key_len);
-                         ^~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
-/mnt/src/include/scratch1.c:32:13: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
-     strncpy(entry->value, value, value_len);
-             ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
-/mnt/src/include/scratch1.c:32:27: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
-     strncpy(entry->value, value, value_len);
-                           ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
 /mnt/src/include/scratch1.c: In function 'print_table_entry':
-/mnt/src/include/scratch1.c:39:28: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+/mnt/src/include/scratch1.c:37:28: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
      printf("Key of length %d: %s\n", entry->key_len, entry->key);
                            ~^         ~~~~~~~~~~~~~~
                            %ld
-/mnt/src/include/scratch1.c:40:30: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+/mnt/src/include/scratch1.c:38:30: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
      printf("Value of length %d: %s\n", entry->value_len, entry->value);
                              ~^         ~~~~~~~~~~~~~~~~
                              %ld
 /mnt/src/include/scratch1.c: In function 'print_packet':
-/mnt/src/include/scratch1.c:49:21: warning: unknown conversion type character 'b' in format [-Wformat=]
+/mnt/src/include/scratch1.c:47:21: warning: unknown conversion type character 'b' in format [-Wformat=]
      printf("Flags: %b\n", packet->flags);
                      ^
-/mnt/src/include/scratch1.c:49:12: warning: too many arguments for format [-Wformat-extra-args]
+/mnt/src/include/scratch1.c:47:12: warning: too many arguments for format [-Wformat-extra-args]
      printf("Flags: %b\n", packet->flags);
             ^~~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'client_test':
-/mnt/src/include/scratch1.c:172:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:170:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testkey1 = "testkey1";
                                ^~~~~~~~~~
-/mnt/src/include/scratch1.c:173:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:171:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testvalue1 = "testvalue1";
                                  ^~~~~~~~~~~~
-/mnt/src/include/scratch1.c:170:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:171:20: warning: unused variable 'testvalue1' [-Wunused-variable]
+     unsigned char* testvalue1 = "testvalue1";
+                    ^~~~~~~~~~
+/mnt/src/include/scratch1.c:170:20: warning: unused variable 'testkey1' [-Wunused-variable]
+     unsigned char* testkey1 = "testkey1";
+                    ^~~~~~~~
+/mnt/src/include/scratch1.c:168:13: warning: unused variable 'htable_test1' [-Wunused-variable]
      htable* htable_test1 = NULL;
              ^~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'peer_test':
-/mnt/src/include/scratch1.c:184:24: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/include/scratch1.c:182:24: warning: unused parameter 'ht' [-Wunused-parameter]
  int peer_test(htable** ht){
                         ^~
 [ 33%] Building C object CMakeFiles/client.dir/src/neighbour.o
@@ -138,147 +109,101 @@ Scanning dependencies of target peer
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                                                               ^
 /mnt/src/src/peer.c: In function 'handle_own_request':
+/mnt/src/src/peer.c:133:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+             strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
+                     ^~~~~~~~~~
+In file included from /mnt/src/src/peer.c:2:0:
+/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/src/peer.c:133:38: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+             strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
+                                      ^~~~~
+In file included from /mnt/src/src/peer.c:2:0:
+/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/src/peer.c:136:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+             strncpy(ack_packet->value, entry->value, entry->value_len);
+                     ^~~~~~~~~~
+In file included from /mnt/src/src/peer.c:2:0:
+/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/src/peer.c:136:40: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+             strncpy(ack_packet->value, entry->value, entry->value_len);
+                                        ^~~~~
+In file included from /mnt/src/src/peer.c:2:0:
+/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
+ extern char *strncpy (char *__restrict __dest,
+              ^~~~~~~
+/mnt/src/src/peer.c:150:23: warning: self-comparison always evaluates to true [-Wtautological-compare]
+     else if (p->flags == p->flags | PKT_FLAG_DEL){
+                       ^~
+/mnt/src/src/peer.c:150:23: warning: suggest parentheses around comparison in operand of '|' [-Wparentheses]
+     else if (p->flags == p->flags | PKT_FLAG_DEL){
+              ~~~~~~~~~^~~~~~~~~~~
 /mnt/src/src/peer.c:119:32: warning: unused parameter 'srv' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                 ^~~
-/mnt/src/src/peer.c:119:45: warning: unused parameter 'c' [-Wunused-parameter]
- int handle_own_request(server *srv, client *c, packet *p) {
-                                             ^
-/mnt/src/src/peer.c:119:56: warning: unused parameter 'p' [-Wunused-parameter]
- int handle_own_request(server *srv, client *c, packet *p) {
-                                                        ^
 /mnt/src/src/peer.c: In function 'handle_packet_ctrl':
-/mnt/src/src/peer.c:209:45: warning: unused parameter 'c' [-Wunused-parameter]
+/mnt/src/src/peer.c:254:45: warning: unused parameter 'c' [-Wunused-parameter]
  int handle_packet_ctrl(server *srv, client *c, packet *p) {
                                              ^
 [ 53%] Building C object CMakeFiles/peer.dir/src/server.o
 [ 60%] Building C object CMakeFiles/peer.dir/src/packet.o
 [ 66%] Building C object CMakeFiles/peer.dir/src/util.o
 [ 73%] Building C object CMakeFiles/peer.dir/src/hash_table.o
-/mnt/src/src/hash_table.c: In function 'htable_set':
-/mnt/src/src/hash_table.c:15:17: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
-         strncpy(entry->value, value, value_len);
-                 ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/hash_table.h:3,
-                 from /mnt/src/src/hash_table.c:1:
-/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
-/mnt/src/src/hash_table.c:15:31: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
-         strncpy(entry->value, value, value_len);
-                               ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/hash_table.h:3,
-                 from /mnt/src/src/hash_table.c:1:
-/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'const unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
-/mnt/src/src/hash_table.c:19:13: warning: implicit declaration of function 'create_entry' [-Wimplicit-function-declaration]
-     entry = create_entry(key, value);
-             ^~~~~~~~~~~~
-/mnt/src/src/hash_table.c:19:11: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
-     entry = create_entry(key, value);
-           ^
 /mnt/src/src/hash_table.c: In function 'htable_delete':
-/mnt/src/src/hash_table.c:36:28: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:64:28: warning: unused parameter 'ht' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                             ^~
-/mnt/src/src/hash_table.c:36:53: warning: unused parameter 'key' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:64:53: warning: unused parameter 'key' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                                                      ^~~
-/mnt/src/src/hash_table.c:36:65: warning: unused parameter 'key_len' [-Wunused-parameter]
+/mnt/src/src/hash_table.c:64:65: warning: unused parameter 'key_len' [-Wunused-parameter]
  int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
                                                                  ^~~~~~~
-/mnt/src/src/hash_table.c:38:1: warning: control reaches end of non-void function [-Wreturn-type]
+/mnt/src/src/hash_table.c:66:1: warning: control reaches end of non-void function [-Wreturn-type]
  }
  ^
 [ 80%] Building C object CMakeFiles/peer.dir/src/neighbour.o
 [ 86%] Building C object CMakeFiles/peer.dir/src/requests.o
 [ 93%] Building C object CMakeFiles/peer.dir/include/scratch1.o
-/mnt/src/include/scratch1.c: In function 'create_entry':
-/mnt/src/include/scratch1.c:24:26: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
-     int key_len = strlen(key);
-                          ^~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:384:15: note: expected 'const char *' but argument is of type 'unsigned char *'
- extern size_t strlen (const char *__s)
-               ^~~~~~
-/mnt/src/include/scratch1.c:25:28: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness [-Wpointer-sign]
-     int value_len = strlen(value);
-                            ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:384:15: note: expected 'const char *' but argument is of type 'unsigned char *'
- extern size_t strlen (const char *__s)
-               ^~~~~~
-/mnt/src/include/scratch1.c:29:13: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
-     strncpy(entry->key, key, key_len);
-             ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
-/mnt/src/include/scratch1.c:29:25: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
-     strncpy(entry->key, key, key_len);
-                         ^~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
-/mnt/src/include/scratch1.c:32:13: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
-     strncpy(entry->value, value, value_len);
-             ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
-/mnt/src/include/scratch1.c:32:27: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
-     strncpy(entry->value, value, value_len);
-                           ^~~~~
-In file included from /mnt/src/include/uthash.h:31:0,
-                 from /mnt/src/include/scratch1.h:5,
-                 from /mnt/src/include/scratch1.c:4:
-/usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
- extern char *strncpy (char *__restrict __dest,
-              ^~~~~~~
 /mnt/src/include/scratch1.c: In function 'print_table_entry':
-/mnt/src/include/scratch1.c:39:28: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+/mnt/src/include/scratch1.c:37:28: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
      printf("Key of length %d: %s\n", entry->key_len, entry->key);
                            ~^         ~~~~~~~~~~~~~~
                            %ld
-/mnt/src/include/scratch1.c:40:30: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+/mnt/src/include/scratch1.c:38:30: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
      printf("Value of length %d: %s\n", entry->value_len, entry->value);
                              ~^         ~~~~~~~~~~~~~~~~
                              %ld
 /mnt/src/include/scratch1.c: In function 'print_packet':
-/mnt/src/include/scratch1.c:49:21: warning: unknown conversion type character 'b' in format [-Wformat=]
+/mnt/src/include/scratch1.c:47:21: warning: unknown conversion type character 'b' in format [-Wformat=]
      printf("Flags: %b\n", packet->flags);
                      ^
-/mnt/src/include/scratch1.c:49:12: warning: too many arguments for format [-Wformat-extra-args]
+/mnt/src/include/scratch1.c:47:12: warning: too many arguments for format [-Wformat-extra-args]
      printf("Flags: %b\n", packet->flags);
             ^~~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'client_test':
-/mnt/src/include/scratch1.c:172:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:170:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testkey1 = "testkey1";
                                ^~~~~~~~~~
-/mnt/src/include/scratch1.c:173:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:171:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testvalue1 = "testvalue1";
                                  ^~~~~~~~~~~~
-/mnt/src/include/scratch1.c:170:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:171:20: warning: unused variable 'testvalue1' [-Wunused-variable]
+     unsigned char* testvalue1 = "testvalue1";
+                    ^~~~~~~~~~
+/mnt/src/include/scratch1.c:170:20: warning: unused variable 'testkey1' [-Wunused-variable]
+     unsigned char* testkey1 = "testkey1";
+                    ^~~~~~~~
+/mnt/src/include/scratch1.c:168:13: warning: unused variable 'htable_test1' [-Wunused-variable]
      htable* htable_test1 = NULL;
              ^~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'peer_test':
-/mnt/src/include/scratch1.c:184:24: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/include/scratch1.c:182:24: warning: unused parameter 'ht' [-Wunused-parameter]
  int peer_test(htable** ht){
                         ^~
 [100%] Linking C executable peer

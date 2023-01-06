@@ -125,7 +125,6 @@ int handle_own_request(server *srv, client *c, packet *p) {
     uint8_t set_flag = p->flags | PKT_FLAG_SET;
     if (p->flags == get_flag) {// equal to itself with GET flag set
         // GET request
-        printf("GET GET.\n");
         ack_packet->flags = 0 | PKT_FLAG_GET | PKT_FLAG_ACK;
         htable* entry = htable_get(ht, p->key, p->key_len);
         if (entry != NULL){
@@ -138,14 +137,15 @@ int handle_own_request(server *srv, client *c, packet *p) {
             ack_packet->value_len = entry->value_len;
         }
         else {
-            printf("No entry?\n");
+            printf("No entry to GET?\n");
         }
     }
     else if (p->flags == set_flag){
             // SET request
-            printf("set set\n");
             ack_packet->flags = 0 | PKT_FLAG_SET | PKT_FLAG_ACK;
             htable_set(ht, p->key, p->key_len, p->value, p->value_len);
+            htable* test_entry;
+            HASH_FIND(hh, *(ht), p->key, p->key_len, test_entry);
         }
     else if (p->flags == p->flags | PKT_FLAG_DEL){
         // DEL request
@@ -156,7 +156,6 @@ int handle_own_request(server *srv, client *c, packet *p) {
         printf("Ivalid request!\n"); // ?? HOW should we handle these?
     }
 
-    printf("The hell?\n");
     // send the ACK packet to the client
     // ??? IS the connection to the client already established or do we need to do that?
     size_t packet_size; // will store the size of the packet returned by serialize

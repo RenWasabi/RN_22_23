@@ -9,6 +9,8 @@
 ../include/hash_table.h
 uthash.h
 ../include/uthash.h
+stdio.h
+../include/stdio.h
 
 ../include/neighbour.h
 packet.h
@@ -77,6 +79,8 @@ sys/socket.h
 /mnt/src/include/hash_table.h
 uthash.h
 /mnt/src/include/uthash.h
+stdio.h
+/mnt/src/include/stdio.h
 
 /mnt/src/include/neighbour.h
 packet.h

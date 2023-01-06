@@ -1,6 +1,6 @@
 .
 ----------------------------------------------------------------------
-Ran 1 test in 2.309s
+Ran 1 test in 2.205s
 
 OK
 .FFFFFFFFF.
@@ -195,6 +195,6 @@ Traceback (most recent call last):
 AssertionError: Did not receive a GET request within timeout! Stdout: bytearray(b''), Stderr:bytearray(b"Starting server. Press any key to exit.\nDecoded packet header: \n\tACK: 0\n\tGET: 1\n\tSET: 0\n\tDEL: 0\n\tKey Length: 12 Bytes\n\tValue Length: 0 Bytes\nHash id: 18281\nSuccessor\'s business.\n")
 
 ----------------------------------------------------------------------
-Ran 11 tests in 53.814s
+Ran 11 tests in 54.342s
 
 FAILED (failures=9)
