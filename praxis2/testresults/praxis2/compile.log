@@ -45,30 +45,30 @@ Scanning dependencies of target client
                              ~^         ~~~~~~~~~~~~~~~~
                              %ld
 /mnt/src/include/scratch1.c: In function 'print_packet':
-/mnt/src/include/scratch1.c:47:21: warning: unknown conversion type character 'b' in format [-Wformat=]
+/mnt/src/include/scratch1.c:71:21: warning: unknown conversion type character 'b' in format [-Wformat=]
      printf("Flags: %b\n", packet->flags);
                      ^
-/mnt/src/include/scratch1.c:47:12: warning: too many arguments for format [-Wformat-extra-args]
+/mnt/src/include/scratch1.c:71:12: warning: too many arguments for format [-Wformat-extra-args]
      printf("Flags: %b\n", packet->flags);
             ^~~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'client_test':
-/mnt/src/include/scratch1.c:170:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:194:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testkey1 = "testkey1";
                                ^~~~~~~~~~
-/mnt/src/include/scratch1.c:171:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:195:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testvalue1 = "testvalue1";
                                  ^~~~~~~~~~~~
-/mnt/src/include/scratch1.c:171:20: warning: unused variable 'testvalue1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:195:20: warning: unused variable 'testvalue1' [-Wunused-variable]
      unsigned char* testvalue1 = "testvalue1";
                     ^~~~~~~~~~
-/mnt/src/include/scratch1.c:170:20: warning: unused variable 'testkey1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:194:20: warning: unused variable 'testkey1' [-Wunused-variable]
      unsigned char* testkey1 = "testkey1";
                     ^~~~~~~~
-/mnt/src/include/scratch1.c:168:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:192:13: warning: unused variable 'htable_test1' [-Wunused-variable]
      htable* htable_test1 = NULL;
              ^~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'peer_test':
-/mnt/src/include/scratch1.c:182:24: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/include/scratch1.c:206:24: warning: unused parameter 'ht' [-Wunused-parameter]
  int peer_test(htable** ht){
                         ^~
 [ 33%] Building C object CMakeFiles/client.dir/src/neighbour.o
@@ -76,15 +76,11 @@ Scanning dependencies of target client
 [ 40%] Built target client
 Scanning dependencies of target peer
 [ 46%] Building C object CMakeFiles/peer.dir/src/peer.o
-/mnt/src/src/peer.c: In function 'forward':
-/mnt/src/src/peer.c:29:19: warning: unused parameter 'p' [-Wunused-parameter]
- int forward(peer *p, packet *pack) {
-                   ^
 /mnt/src/src/peer.c: In function 'proxy_request':
-/mnt/src/src/peer.c:86:19: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:90:19: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
      answer_serial = recvall(n->socket, &answer_len);
                    ^
-/mnt/src/src/peer.c:88:40: warning: pointer targets in passing argument 1 of 'packet_decode' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:92:40: warning: pointer targets in passing argument 1 of 'packet_decode' differ in signedness [-Wpointer-sign]
      packet* answer_pkt = packet_decode(answer_serial, answer_len);
                                         ^~~~~~~~~~~~~
 In file included from /mnt/src/include/neighbour.h:3:0,
@@ -92,11 +88,11 @@ In file included from /mnt/src/include/neighbour.h:3:0,
 /mnt/src/include/packet.h:61:9: note: expected 'const unsigned char *' but argument is of type 'char *'
  packet *packet_decode(const unsigned char *buffer, size_t buf_len);
          ^~~~~~~~~~~~~
-/mnt/src/src/peer.c:90:26: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
+/mnt/src/src/peer.c:94:26: warning: format '%d' expects argument of type 'int', but argument 2 has type 'size_t {aka long unsigned int}' [-Wformat=]
      printf("Answer len: %d\n", answer_len);
                          ~^
                          %ld
-/mnt/src/src/peer.c:91:22: warning: pointer targets in passing argument 2 of 'sendall' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:95:22: warning: pointer targets in passing argument 2 of 'sendall' differ in signedness [-Wpointer-sign]
      sendall(csocket, answer_serial, answer_len);
                       ^~~~~~~~~~~~~
 In file included from /mnt/src/include/server.h:7:0,
@@ -105,52 +101,52 @@ In file included from /mnt/src/include/server.h:7:0,
 /mnt/src/include/util.h:26:5: note: expected 'unsigned char *' but argument is of type 'char *'
  int sendall(int s, unsigned char *buffer, size_t buf_size);
      ^~~~~~~
-/mnt/src/src/peer.c:79:27: warning: unused parameter 'srv' [-Wunused-parameter]
+/mnt/src/src/peer.c:83:27: warning: unused parameter 'srv' [-Wunused-parameter]
  int proxy_request(server *srv, int csocket, packet *p, peer *n) {
                            ^~~
 /mnt/src/src/peer.c: In function 'handle_own_request':
-/mnt/src/src/peer.c:165:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:171:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
              strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
                      ^~~~~~~~~~
 In file included from /mnt/src/src/peer.c:2:0:
 /usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  extern char *strncpy (char *__restrict __dest,
               ^~~~~~~
-/mnt/src/src/peer.c:165:38: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:171:38: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
              strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
                                       ^~~~~
 In file included from /mnt/src/src/peer.c:2:0:
 /usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
  extern char *strncpy (char *__restrict __dest,
               ^~~~~~~
-/mnt/src/src/peer.c:168:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:174:21: warning: pointer targets in passing argument 1 of 'strncpy' differ in signedness [-Wpointer-sign]
              strncpy(ack_packet->value, entry->value, entry->value_len);
                      ^~~~~~~~~~
 In file included from /mnt/src/src/peer.c:2:0:
 /usr/include/string.h:124:14: note: expected 'char * restrict' but argument is of type 'unsigned char *'
  extern char *strncpy (char *__restrict __dest,
               ^~~~~~~
-/mnt/src/src/peer.c:168:40: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
+/mnt/src/src/peer.c:174:40: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness [-Wpointer-sign]
              strncpy(ack_packet->value, entry->value, entry->value_len);
                                         ^~~~~
 In file included from /mnt/src/src/peer.c:2:0:
 /usr/include/string.h:124:14: note: expected 'const char * restrict' but argument is of type 'unsigned char *'
  extern char *strncpy (char *__restrict __dest,
               ^~~~~~~
-/mnt/src/src/peer.c:185:23: warning: self-comparison always evaluates to true [-Wtautological-compare]
+/mnt/src/src/peer.c:191:23: warning: self-comparison always evaluates to true [-Wtautological-compare]
      else if (p->flags == p->flags | PKT_FLAG_DEL){
                        ^~
-/mnt/src/src/peer.c:185:23: warning: suggest parentheses around comparison in operand of '|' [-Wparentheses]
+/mnt/src/src/peer.c:191:23: warning: suggest parentheses around comparison in operand of '|' [-Wparentheses]
      else if (p->flags == p->flags | PKT_FLAG_DEL){
               ~~~~~~~~~^~~~~~~~~~~
-/mnt/src/src/peer.c:197:12: warning: too many arguments for format [-Wformat-extra-args]
+/mnt/src/src/peer.c:203:12: warning: too many arguments for format [-Wformat-extra-args]
      printf("Sending ACK packet to socket c->socket.\n", c->socket);
             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/mnt/src/src/peer.c:150:32: warning: unused parameter 'srv' [-Wunused-parameter]
+/mnt/src/src/peer.c:156:32: warning: unused parameter 'srv' [-Wunused-parameter]
  int handle_own_request(server *srv, client *c, packet *p) {
                                 ^~~
 /mnt/src/src/peer.c: In function 'handle_packet_ctrl':
-/mnt/src/src/peer.c:295:45: warning: unused parameter 'c' [-Wunused-parameter]
+/mnt/src/src/peer.c:307:45: warning: unused parameter 'c' [-Wunused-parameter]
  int handle_packet_ctrl(server *srv, client *c, packet *p) {
                                              ^
 [ 53%] Building C object CMakeFiles/peer.dir/src/server.o
@@ -183,30 +179,30 @@ In file included from /mnt/src/src/peer.c:2:0:
                              ~^         ~~~~~~~~~~~~~~~~
                              %ld
 /mnt/src/include/scratch1.c: In function 'print_packet':
-/mnt/src/include/scratch1.c:47:21: warning: unknown conversion type character 'b' in format [-Wformat=]
+/mnt/src/include/scratch1.c:71:21: warning: unknown conversion type character 'b' in format [-Wformat=]
      printf("Flags: %b\n", packet->flags);
                      ^
-/mnt/src/include/scratch1.c:47:12: warning: too many arguments for format [-Wformat-extra-args]
+/mnt/src/include/scratch1.c:71:12: warning: too many arguments for format [-Wformat-extra-args]
      printf("Flags: %b\n", packet->flags);
             ^~~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'client_test':
-/mnt/src/include/scratch1.c:170:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:194:31: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testkey1 = "testkey1";
                                ^~~~~~~~~~
-/mnt/src/include/scratch1.c:171:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
+/mnt/src/include/scratch1.c:195:33: warning: pointer targets in initialization differ in signedness [-Wpointer-sign]
      unsigned char* testvalue1 = "testvalue1";
                                  ^~~~~~~~~~~~
-/mnt/src/include/scratch1.c:171:20: warning: unused variable 'testvalue1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:195:20: warning: unused variable 'testvalue1' [-Wunused-variable]
      unsigned char* testvalue1 = "testvalue1";
                     ^~~~~~~~~~
-/mnt/src/include/scratch1.c:170:20: warning: unused variable 'testkey1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:194:20: warning: unused variable 'testkey1' [-Wunused-variable]
      unsigned char* testkey1 = "testkey1";
                     ^~~~~~~~
-/mnt/src/include/scratch1.c:168:13: warning: unused variable 'htable_test1' [-Wunused-variable]
+/mnt/src/include/scratch1.c:192:13: warning: unused variable 'htable_test1' [-Wunused-variable]
      htable* htable_test1 = NULL;
              ^~~~~~~~~~~~
 /mnt/src/include/scratch1.c: In function 'peer_test':
-/mnt/src/include/scratch1.c:182:24: warning: unused parameter 'ht' [-Wunused-parameter]
+/mnt/src/include/scratch1.c:206:24: warning: unused parameter 'ht' [-Wunused-parameter]
  int peer_test(htable** ht){
                         ^~
 [100%] Linking C executable peer

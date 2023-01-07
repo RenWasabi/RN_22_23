@@ -28,7 +28,7 @@ peer *succ = NULL;
  */
 int forward(peer *p, packet *pack) {
     /* TODO IMPLEMENT */
-    printf("Goal: forward packet from Peer %d to Peer %d\n", self->node_id, succ->node_id);
+    printf("Goal: forward packet from Peer %d to Peer %d\n", self->node_id, p->node_id);
     // send the lookup packet to the successor
     size_t packet_size; // will store the size of the packet returned by serialize
     unsigned char* serialized_pack = packet_serialize(pack, &packet_size);
@@ -41,7 +41,7 @@ int forward(peer *p, packet *pack) {
     // TEST END
 
     // open a connection to the sucessor peer to forward to
-    if (peer_connect(succ) < 0){
+    if (peer_connect(p) < 0){
         printf("An error occured while trying to connect to the successor.\n");
         return -1;
     }
@@ -49,17 +49,21 @@ int forward(peer *p, packet *pack) {
 
     // int sendall(int s, unsigned char *buffer, size_t buf_size)
     // s apparantly needs to be the socket of the successor to work
-    if (sendall(succ->socket, serialized_pack, packet_size) < 0){
+    if (sendall(p->socket, serialized_pack, packet_size) < 0){
         printf("An error occurred while trying to send forward a packet.\n");
         return -1;
     }
 
     //uint8_t ack_flag = pack->flags | PKT_FLAG_LKUP;
     /* in case of proxy request, connection needs to remain open for reply */
-    uint8_t ctlr_flag = pack->flags | PKT_FLAG_CTRL;
-    if (pack->flags == ctlr_flag){
-        peer_disconnect(succ);
-        printf("Disconnected.\n");
+    //uint8_t ctlr_flag = pack->flags | PKT_FLAG_CTRL;
+    //if (pack->flags == ctlr_flag){
+    if (pack->flags & PKT_FLAG_CTRL){
+            peer_disconnect(p);
+            printf("Disconnected.\n");
+        }
+    else {
+        printf("Connections remains open.\n");
     }
 
     //printf("Lookup package was sent successfully.\n");
@@ -107,17 +111,19 @@ int lookup_peer(uint16_t hash_id) {
     lkup_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_LKUP; // reserved bits set to 0 // htons????
 
     // with NBO
-    //lkup_packet->hash_id = htons(hash_id);
-    //lkup_packet->node_id = htons(self->node_id);
-    //lkup_packet->node_ip = htonl(peer_get_ip(self)); // !! NOT SURE IF THIS GETS THE CORRECT IP
-    //lkup_packet->node_port = htons(self->port);
+    /*
+    lkup_packet->hash_id = htons(hash_id);
+    lkup_packet->node_id = htons(self->node_id);
+    lkup_packet->node_ip = htonl(peer_get_ip(self)); // !! NOT SURE IF THIS GETS THE CORRECT IP
+    lkup_packet->node_port = htons(self->port);
+     */
 
     // without NBO
-
     lkup_packet->hash_id = hash_id;
     lkup_packet->node_id = self->node_id;
     lkup_packet->node_ip = peer_get_ip(self);
     lkup_packet->node_port = self->port;
+
 
 
     // TEST BEGIN
@@ -221,9 +227,14 @@ int answer_lookup(packet *p, peer *n) {
     packet* rply_packet = packet_new(); // initialize packet
     rply_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_RPLY; // reserved bits set to 0 // htons????
     rply_packet->hash_id = p->hash_id;
+    /*
     rply_packet->node_id = htons(n->node_id);
     rply_packet->node_ip = htonl(peer_get_ip(n)); // !! NOT SURE IF THIS GETS THE CORRECT IP
     rply_packet->node_port = htons(n->port);
+     */
+    rply_packet->node_id = n->node_id;
+    rply_packet->node_ip = peer_get_ip(n); // !! NOT SURE IF THIS GETS THE CORRECT IP
+    rply_packet->node_port = n->port;
 
     // TEST BEGIN
     printf("Reply packet: \n");
@@ -233,6 +244,7 @@ int answer_lookup(packet *p, peer *n) {
     // create the peer to send the reply to from the information in the lookup packet
     peer* asking_peer = peer_from_packet(p);
     // send the reply to this peer
+    printf("About to send RPLY packet to node: %d\n", asking_peer->node_id);
     if (forward(asking_peer, rply_packet) < 0){
         printf("Error while forwarding reply packet to peer initiating lookup.\n");
     }

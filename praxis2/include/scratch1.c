@@ -42,6 +42,8 @@ void print_table_entry(htable* entry){
 }
 
 void print_packet(packet* packet){
+    // mit NBO
+    /*
     printf("---------------------------------------------------------\n");
     printf("PACKET:\n");
     printf("Flags: %b\n", packet->flags);
@@ -61,6 +63,28 @@ void print_packet(packet* packet){
     printf("Node_Id: %d\n", ntohs(packet->node_id));
     printf("Node_Ip: %d\n", ntohl(packet->node_ip));
     printf("Node_Port: %d\n", ntohs(packet->node_port));
+    printf("---------------------------------------------------------\n");
+     */
+    // ohne NBO
+    printf("---------------------------------------------------------\n");
+    printf("PACKET:\n");
+    printf("Flags: %b\n", packet->flags);
+    printf("Keylen: %d\n", packet->key_len);
+    printf("Value_len: %d\n", packet->value_len);
+    if (packet->key_len <= 0){
+        printf("No key.\n");
+    } else {
+        printf("Key: %s\n", packet->key);
+    }
+    if (packet->value_len <= 0){
+        printf("No value.\n");
+    } else {
+        printf("Value: %s\n", packet->value);
+    }
+    printf("Hash_Id: %d\n", packet->hash_id);
+    printf("Node_Id: %d\n", packet->node_id);
+    printf("Node_Ip: %d\n", packet->node_ip);
+    printf("Node_Port: %d\n", packet->node_port);
     printf("---------------------------------------------------------\n");
 
 
