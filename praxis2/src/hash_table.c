@@ -66,6 +66,17 @@ htable *htable_get(htable **ht, const unsigned char *key, size_t key_len) {
 
 int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
     /* TODO IMPLEMENT */
+    htable* toDelete;
+    HASH_FIND(hh, *(ht), key, key_len, toDelete);
+    HASH_DEL(*(ht), toDelete);
+    
+    //freeing everything
+    free(toDelete->key);
+    free(toDelete->key_len);
+    free(toDelete->value);
+    free(toDelete->value_len);
+   
+    free(toDelete);
 }
 
 
