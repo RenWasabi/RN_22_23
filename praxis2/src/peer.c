@@ -191,7 +191,7 @@ int handle_own_request(server *srv, client *c, packet *p) {
     else if (p->flags == p->flags | PKT_FLAG_DEL){
         // DEL request
         ack_packet->flags = 0 | PKT_FLAG_DEL | PKT_FLAG_ACK;
-        // not yet implemented
+        htable_delete(ht, p->key, p->key_len);
     } else {
         // invalid
         printf("Ivalid request!\n"); // ?? HOW should we handle these?

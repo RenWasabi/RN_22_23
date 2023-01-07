@@ -68,15 +68,19 @@ int htable_delete(htable **ht, const unsigned char *key, size_t key_len) {
     /* TODO IMPLEMENT */
     htable* toDelete;
     HASH_FIND(hh, *(ht), key, key_len, toDelete);
-    HASH_DEL(*(ht), toDelete);
+        if (toDelete != NULL){
+        HASH_DEL(*(ht), toDelete);
+        //freeing everything
+        free(toDelete->key);
+        //free(toDelete->key_len); // included in free(toDelete);
+        free(toDelete->value);
+        //free(toDelete->value_len);
+
+        free(toDelete);
+    }
+    return 0;
     
-    //freeing everything
-    free(toDelete->key);
-    free(toDelete->key_len);
-    free(toDelete->value);
-    free(toDelete->value_len);
-   
-    free(toDelete);
+
 }
 
 
