@@ -28,47 +28,28 @@ peer *succ = NULL;
  */
 int forward(peer *p, packet *pack) {
     /* TODO IMPLEMENT */
-    printf("Goal: forward packet from Peer %d to Peer %d\n", self->node_id, p->node_id);
+    //printf("Goal: forward packet from Peer %d to Peer %d\n", self->node_id, p->node_id);
     // send the lookup packet to the successor
     size_t packet_size; // will store the size of the packet returned by serialize
     unsigned char* serialized_pack = packet_serialize(pack, &packet_size);
-
-    // TEST BEGIN: Test if the packet was serialized correctly
-    //packet* reverse_packet = packet_new();
-    //reverse_packet = packet_decode(serialized_lkup, packet_size);
-    //printf("Reverse engineer lookup packet from serialized data: \n");
-    //print_packet(reverse_packet); // => should be the same as the original lookup packet
-    // TEST END
 
     // open a connection to the sucessor peer to forward to
     if (peer_connect(p) < 0){
         printf("An error occured while trying to connect to the successor.\n");
         return -1;
     }
-    printf("Connected to successor.\n");
 
-    // int sendall(int s, unsigned char *buffer, size_t buf_size)
     // s apparantly needs to be the socket of the successor to work
     if (sendall(p->socket, serialized_pack, packet_size) < 0){
         printf("An error occurred while trying to send forward a packet.\n");
         return -1;
     }
 
-    //uint8_t ack_flag = pack->flags | PKT_FLAG_LKUP;
     /* in case of proxy request, connection needs to remain open for reply */
-    //uint8_t ctlr_flag = pack->flags | PKT_FLAG_CTRL;
-    //if (pack->flags == ctlr_flag){
     if (pack->flags & PKT_FLAG_CTRL){
             peer_disconnect(p);
-            printf("Disconnected.\n");
         }
-    else {
-        printf("Connections remains open.\n");
-    }
-
-    //printf("Lookup package was sent successfully.\n");
     return 0;
-
 }
 
 /**
@@ -83,15 +64,9 @@ int forward(peer *p, packet *pack) {
 int proxy_request(server *srv, int csocket, packet *p, peer *n) {
     /* TODO IMPLEMENT */
     forward(n, p);
-    //peer_connect(n);
     char* answer_serial;
     size_t answer_len;
-    printf("I, node %d now make a proxy request to node %d\n", self->node_id, n->node_id);
     answer_serial = recvall(n->socket, &answer_len);
-    printf("We're getting there...\n");
-    packet* answer_pkt = packet_decode(answer_serial, answer_len);
-    print_packet(answer_pkt);
-    printf("Answer len: %d\n", answer_len);
     sendall(csocket, answer_serial, answer_len);
     peer_disconnect(n);
     return CB_REMOVE_CLIENT; // the default
@@ -109,40 +84,17 @@ int lookup_peer(uint16_t hash_id) {
     // create a lookup control packet
     packet* lkup_packet = packet_new(); // initialize packet
     lkup_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_LKUP; // reserved bits set to 0 // htons????
-
-    // with NBO
-    /*
-    lkup_packet->hash_id = htons(hash_id);
-    lkup_packet->node_id = htons(self->node_id);
-    lkup_packet->node_ip = htonl(peer_get_ip(self)); // !! NOT SURE IF THIS GETS THE CORRECT IP
-    lkup_packet->node_port = htons(self->port);
-     */
-
     // without NBO
     lkup_packet->hash_id = hash_id;
     lkup_packet->node_id = self->node_id;
     lkup_packet->node_ip = peer_get_ip(self);
     lkup_packet->node_port = self->port;
 
-
-
-    // TEST BEGIN
-    printf("Lookup packet: \n");
-    print_packet(lkup_packet);
-    // TEST END
-
     // send lookup packet to successor -> forward packet
     if (forward(succ, lkup_packet) < 0){
-        printf("Error while forwarding lookup packet to successor.\n");
         return -1;
     }
-    printf("Lookup packet forwarded to successor!\n");
     return 0;
-
-
-    return 0;
-
-
 }
 
 /**
@@ -166,16 +118,12 @@ int handle_own_request(server *srv, client *c, packet *p) {
         //ack_packet->flags = htons(ack_packet->flags);
         htable* entry = htable_get(ht, p->key, p->key_len);
         if (entry != NULL){
-            printf("Found your entry to GET.\n");
             ack_packet->key = malloc(entry->key_len);
             strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
             ack_packet->key_len = entry->key_len;
             ack_packet->value = malloc(entry->value_len);
             strncpy(ack_packet->value, entry->value, entry->value_len);
             ack_packet->value_len = entry->value_len;
-        }
-        else {
-            printf("No entry to GET?\n");
         }
     }
     else if (p->flags == set_flag){
@@ -184,9 +132,6 @@ int handle_own_request(server *srv, client *c, packet *p) {
             htable_set(ht, p->key, p->key_len, p->value, p->value_len);
             htable* test_entry;
             HASH_FIND(hh, *(ht), p->key, p->key_len, test_entry);
-            if (test_entry != NULL){
-                fprintf(stderr, "Performed the requested SET operation.\n");
-            }
         }
     else if (p->flags == p->flags | PKT_FLAG_DEL){
         // DEL request
@@ -198,17 +143,11 @@ int handle_own_request(server *srv, client *c, packet *p) {
     }
 
     // send the ACK packet to the client
-    printf("The ACK packet:\n");
-    print_packet(ack_packet);
-    printf("Sending ACK packet to socket c->socket.\n", c->socket);
-    // ??? IS the connection to the client already established or do we need to do that?
     size_t packet_size; // will store the size of the packet returned by serialize
     unsigned char* serialized_pack = packet_serialize(ack_packet, &packet_size);
-    printf("About to send....\n");
     if (sendall(c->socket, serialized_pack, packet_size) < 0){
         printf("An error occurred while trying to send an ACK packet.\n");
     }
-    printf("ACK packet sent.\n");
     return CB_REMOVE_CLIENT; // the default
     //return CB_OK;
 }
@@ -225,26 +164,16 @@ int answer_lookup(packet *p, peer *n) {
     // NOTE: when answer_lookup is triggered, the responsible peer is in the n pointer
     // create a reply control packet
     packet* rply_packet = packet_new(); // initialize packet
-    rply_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_RPLY; // reserved bits set to 0 // htons????
+    rply_packet->flags = 0 | PKT_FLAG_CTRL | PKT_FLAG_RPLY; // reserved bits set to 0
+    // no NBO
     rply_packet->hash_id = p->hash_id;
-    /*
-    rply_packet->node_id = htons(n->node_id);
-    rply_packet->node_ip = htonl(peer_get_ip(n)); // !! NOT SURE IF THIS GETS THE CORRECT IP
-    rply_packet->node_port = htons(n->port);
-     */
     rply_packet->node_id = n->node_id;
-    rply_packet->node_ip = peer_get_ip(n); // !! NOT SURE IF THIS GETS THE CORRECT IP
+    rply_packet->node_ip = peer_get_ip(n);
     rply_packet->node_port = n->port;
-
-    // TEST BEGIN
-    printf("Reply packet: \n");
-    print_packet(rply_packet);
-    // TEST END
 
     // create the peer to send the reply to from the information in the lookup packet
     peer* asking_peer = peer_from_packet(p);
     // send the reply to this peer
-    printf("About to send RPLY packet to node: %d\n", asking_peer->node_id);
     if (forward(asking_peer, rply_packet) < 0){
         printf("Error while forwarding reply packet to peer initiating lookup.\n");
     }
@@ -252,17 +181,6 @@ int answer_lookup(packet *p, peer *n) {
     return CB_REMOVE_CLIENT;
 }
 
-// after here added by me for testing: BEGIN
-// needs to be inside of peer file for accessing global variables
-void test_peer_inside(){
-    printf("inside test\n");
-    printf("%s\n", self->hostname);
-    lookup_peer(111);
-    printf("Test222\n");
-
-
-}
-// TEST END
 
 /**
  * @brief Handle a key request request from a client.
@@ -280,7 +198,7 @@ int handle_packet_data(server *srv, client *c, packet *p) {
     // Forward the packet to the correct peer
     if (peer_is_responsible(pred->node_id, self->node_id, hash_id)) {
         // We are responsible for this key
-        fprintf(stderr, "We are responsible and this is compiled.\n");
+        fprintf(stderr, "We are responsible.\n");
         return handle_own_request(srv, c, p);
     } else if (peer_is_responsible(self->node_id, succ->node_id, hash_id)) {
         // Our successor is responsible for this key
