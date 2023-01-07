@@ -163,10 +163,10 @@ int handle_own_request(server *srv, client *c, packet *p) {
             printf("Found your entry to GET.\n");
             ack_packet->key = malloc(entry->key_len);
             strncpy(ack_packet->key, entry->key, entry->key_len); // do we need NBO here???
-            ack_packet->key_len = htons(entry->key_len);
+            ack_packet->key_len = entry->key_len;
             ack_packet->value = malloc(entry->value_len);
             strncpy(ack_packet->value, entry->value, entry->value_len);
-            ack_packet->value_len = htons(entry->value_len);
+            ack_packet->value_len = entry->value_len;
         }
         else {
             printf("No entry to GET?\n");
